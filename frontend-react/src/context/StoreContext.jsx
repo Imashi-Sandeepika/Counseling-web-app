@@ -10,7 +10,7 @@ const CATEGORIES = [
 ];
 
 const INITIAL_STORE = {
-    user: { authenticated: false, email: "", name: "", token: "" },
+    user: { authenticated: true, email: "imashisandeepika2001@gmail.com", name: "Imashi", token: "demo-token" },
     counselor: { authenticated: false, id: null, email: "", name: "", token: "" },
     admin: { authenticated: false, id: null, email: "", name: "", token: "" },
     activities: [],
@@ -24,8 +24,8 @@ const INITIAL_STORE = {
     settings: {
         language: "en",
         sectionLangs: {},
-        theme: "light",
-        accent: "#9ACD32",
+        theme: "dark",
+        accent: "#32de84",
         reduced: false,
         fontScale: 1,
         contrast: "normal",
@@ -96,15 +96,6 @@ export const StoreProvider = ({ children }) => {
             ...prev,
             activities: [newActivity, ...prev.activities.slice(0, 199)]
         }));
-
-        // Non-blocking notification
-        if (store.user.email) {
-            api('/api/notifications', 'POST', {
-                email: store.user.email,
-                msg: `${type} • ${detail}`,
-                status: 'info'
-            }).catch(e => console.error("Activity Notification Error:", e));
-        }
     };
 
     const logout = () => {

@@ -13,7 +13,8 @@ import Feedback from './views/Feedback';
 import ForgotPassword from './views/ForgotPassword';
 import AdminDashboard from './views/AdminDashboard';
 import CounselorDashboard from './views/CounselorDashboard';
-import Profile from './views/Profile';
+
+
 import Privacy from './views/Privacy';
 import Terms from './views/Terms';
 import CounselorTask from './views/CounselorTask';
@@ -36,11 +37,12 @@ const App = () => {
       case 'forgot-password': return <ForgotPassword />;
       case 'admin-dashboard': return <AdminDashboard />;
       case 'counselor-dashboard': return <CounselorDashboard />;
-      case 'profile': return <Profile />;
+
       case 'privacy': return <Privacy />;
       case 'terms': return <Terms />;
       case 'counselor-task': return <CounselorTask />;
       case 'live-session': return <LiveSession />;
+
       default: return <LandingLogin />;
     }
   };

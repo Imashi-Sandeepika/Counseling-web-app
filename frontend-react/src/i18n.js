@@ -36,6 +36,24 @@ export const i18n = {
             available_immediately: "Available for appointments immediately",
             register_btn: "Register Counselor",
             back_to_settings: "← Back to Settings"
+        },
+        chat: {
+            welcome: "Hi! I'm your MindEase Assistant. How are you feeling today?",
+            name: "MindEase Assistant",
+            typing: "Typing guidance...",
+            ready: "Ready to help",
+            aiPowered: "AI Powered",
+            panicReply: "Place a hand on your belly, breathe slowly: inhale 4, hold 4, exhale 6 for 3 minutes. Name five things you see.",
+            anxietyReply: "Start with one small step. Try inhale 4, hold 4, exhale 6 for 3 minutes, then write one action you’ll do today.",
+            depressionReply: "You’re not alone. Text a supportive person and choose one 10‑minute activity (walk, shower, tidy). Small steps count.",
+            defaultReply: "Tell me more about what’s happening. I’ll suggest a short, practical step."
+        },
+        resources: {
+            intro: "Select the category that best describes your issue from the available categories.",
+            category_label: "Category",
+            self_try: "Try with yourself",
+            motivation: "Motivation Videos",
+            relaxation: "Relaxation Therapies"
         }
     },
     si: {
@@ -75,6 +93,24 @@ export const i18n = {
             available_immediately: "වහාම හමුවීම් සඳහා ලබා ගත හැකිය",
             register_btn: "උපදේශක ලියාපදිංචි කරන්න",
             back_to_settings: "← සැකසුම් වලට ආපසු යන්න"
+        },
+        chat: {
+            welcome: "ආයුබෝවන්! මම ඔබේ මනෝ සුවතා සහායකයා. අද ඔබට කොහොමද?",
+            name: "මනෝ සුවතා සහායකයා",
+            typing: "මග පෙන්වීම සූදානම් කරමින්...",
+            ready: "සහාය වීමට සූදානම්",
+            aiPowered: "AI තාක්ෂණයෙන්",
+            panicReply: "බඩ මත අතක් තබා, සෙමින් හුස්ම ගන්න: තත්පර 4ක් ඇතුළට, 4ක් රඳවා තබා ගන්න, 6ක් පිට කරන්න. ඔබ දකින දේවල් පහක් නම් කරන්න.",
+            anxietyReply: "එක් කුඩා පියවරකින් ආරම්භ කරන්න. තත්පර 4ක් ආශ්වාස කරන්න, 4ක් රඳවාගෙන සිටින්න, 6ක් ප්‍රශ්වාස කරන්න. ඉන්පසු ඔබ අද කරන එක් දෙයක් ලියන්න.",
+            depressionReply: "ඔබ තනි වී නැත. ඔබට සහාය විය හැකි පුද්ගලයෙකුට පණිවිඩයක් යවන්න. ඔබ කැමති කුඩා ක්‍රියාවක් (ඇවිදීම, ස්නානය කිරීම) තෝරා ගන්න.",
+            defaultReply: "සිදුවන දේ ගැන මට තවත් කියන්න. මම ප්‍රායෝගික පියවරක් යෝජනා කරන්නම්."
+        },
+        resources: {
+            intro: "පවතින ප්‍රවර්ග වලින් ඔබේ ගැටලුව වඩාත් හොඳින් විස්තර කරන ප්‍රවර්ගය තෝරන්න.",
+            category_label: "ප්‍රවර්ගය",
+            self_try: "ඔබම උත්සාහ කරන්න",
+            motivation: "අභිප්‍රේරණ වීඩියෝ",
+            relaxation: "ලිහිල් කිරීමේ ප්‍රතිකාර"
         }
     }
 };

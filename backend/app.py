@@ -141,10 +141,12 @@ class Payment(db.Model):
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_email = db.Column(db.String(255))
+    appointment_id = db.Column(db.Integer) # Track which appointment this belongs to
     title = db.Column(db.String(255))
     msg = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(16))
     related_person = db.Column(db.String(255))
+    related_image = db.Column(db.String(255))
     ts = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Email(db.Model):
@@ -443,8 +445,42 @@ def update_appointment(aid):
     if not a:
         return jsonify({"error": "not_found"}), 404
         
+    old_status = a.status
     if "status" in data:
         a.status = data["status"]
+        if old_status != a.status:
+            c = Counselor.query.get(a.counselor_id)
+            c_name = c.name if c else "Counselor"
+            c_img = c.profile_image if c else None
+            
+            # Remove PREVIOUS notifications for this appointment to keep it to one for the USER
+            Notification.query.filter_by(appointment_id=a.id, user_email=a.user_email).delete()
+            
+            msg = f"Your session with {c_name} on {a.date} at {a.time} is now {a.status}."
+            db.session.add(Notification(
+                user_email=a.user_email,
+                appointment_id=a.id,
+                title=f"Appointment {a.status.capitalize()}",
+                msg=msg,
+                status="success" if a.status == "confirmed" else "info",
+                related_person=c_name,
+                related_image=c_img
+            ))
+
+            # ALSO notify counselor if the update didn't come from them (though usually it does)
+            if c and c.email:
+                Notification.query.filter_by(appointment_id=a.id, user_email=c.email).delete()
+                c_msg = f"Appointment with {a.user_email} on {a.date} at {a.time} is now {a.status}."
+                db.session.add(Notification(
+                    user_email=c.email,
+                    appointment_id=a.id,
+                    title=f"Booking {a.status.capitalize()}",
+                    msg=c_msg,
+                    status="info",
+                    related_person=a.user_email,
+                    related_image="images/Client.jpg"
+                ))
+
     if "paymentStatus" in data:
         a.payment_status = data["paymentStatus"]
     if "passcode" in data:
@@ -465,8 +501,45 @@ def add_appointment():
     email = data.get("email")
     if not cid or not date or not time:
         return jsonify({"error": "missing_fields"}), 400
+    
+    # Get counselor info
+    c = Counselor.query.get(cid)
+    c_name = c.name if c else "Counselor"
+    c_email = c.email if c else None
+
     a = Appointment(counselor_id=cid, user_email=email, date=date, time=time, status="pending")
     db.session.add(a)
+    db.session.flush() # Get appointment ID
+
+    # Notification for User
+    user_msg = f"Your session with {c_name} on {date} at {time} has been requested."
+    db.session.add(Notification(
+        user_email=email,
+        appointment_id=a.id,
+        title="Appointment Requested",
+        msg=user_msg,
+        status="info",
+        related_person=c_name,
+        related_image=c.profile_image if c else None
+    ))
+    
+    # Notification for Counselor
+    if c_email:
+        # Find user if possible for image
+        u = User.query.filter_by(email=email).first()
+        u_img = "images/Client.jpg" # Default client image
+
+        c_msg = f"A new client, {email}, has requested a session on {date} at {time}."
+        db.session.add(Notification(
+            user_email=c_email,
+            appointment_id=a.id,
+            title="New Booking Request",
+            msg=c_msg,
+            status="info",
+            related_person=email,
+            related_image=u_img
+        ))
+
     db.session.commit()
     return jsonify({"id": a.id, "ok": True})
 
@@ -560,6 +633,7 @@ def list_notifications():
         "msg": n.msg,
         "status": n.status,
         "related_person": n.related_person,
+        "related_image": n.related_image,
         "ts": int(n.ts.timestamp() * 1000)
     } for n in ns])
 
@@ -1196,6 +1270,10 @@ def main():
                 db.session.execute(text("ALTER TABLE notification ADD COLUMN title TEXT"))
             if "related_person" not in names3:
                 db.session.execute(text("ALTER TABLE notification ADD COLUMN related_person TEXT"))
+            if "related_image" not in names3:
+                db.session.execute(text("ALTER TABLE notification ADD COLUMN related_image TEXT"))
+            if "appointment_id" not in names3:
+                db.session.execute(text("ALTER TABLE notification ADD COLUMN appointment_id INTEGER"))
 
             db.session.commit()
         except Exception as e:
