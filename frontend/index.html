@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link rel="stylesheet" href="assets/styles.css?v=7">
+</head>
+
+<body>
+  <header>
+    <div class="brand"></div>
+    <nav>
+      <button data-view="home" class="nav-btn active">Home</button>
+      <button data-view="resources" class="nav-btn">Readings</button>
+      <button data-view="chat" class="nav-btn">ChatUs</button>
+      <button data-view="counselors" class="nav-btn">Live</button>
+      <button data-view="register-counselor" class="nav-btn">Register Counselor</button>
+      <button data-view="notifications" class="nav-btn">Notifications</button>
+      <button data-view="settings" class="nav-btn">Settings</button>
+    </nav>
+  </header>
+  <main>
+    <section id="landing-login" class="view active">
+      <div style="text-align: center; margin-bottom: 50px; padding-top: 20px;">
+        <h1 style="color: white; font-size: 3.2em; margin-bottom: 12px; font-weight: 800; letter-spacing: -1px;">Welcome
+          to Menta</h1>
+        <p style="color: var(--muted); font-size: 1.2em; max-width: 600px; margin: 0 auto; line-height: 1.6;">Your
+          journey to better mental health starts here. Sign in to access your personalized dashboard.</p>
+        <button id="auth-dashboard-btn" class="btn-formal"
+          style="display:none; margin: 20px auto 0; background: var(--good); color: #041022; font-weight: 700; padding: 12px 24px;"
+          onclick="navigate('home')">
+          Go to Your Dashboard →
+        </button>
+      </div>
+
+      <div style="max-width: 480px; margin: 0 auto;">
+        <!-- Client Module -->
+        <div class="panel"
+          style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--accent); position: relative; overflow: hidden; background: rgba(255,255,255,0.03);">
+          <div>
+            <div style="font-size: 2.5em; margin-bottom: 15px; text-align: center;">👤</div>
+            <h2 style="color: white; margin-bottom: 20px; font-weight: 700; text-align: center;">Sign In</h2>
+            <form id="landing-client-login-form">
+              <label style="color: white; font-weight: 500;">Email Address<input name="email" type="email"
+                  placeholder="your@email.com" required></label>
+              <label style="color: white; font-weight: 500;">Password
+                <div class="password-wrapper">
+                  <input name="password" type="password" placeholder="••••••••" required>
+                  <button type="button" class="toggle-password" title="Toggle Password Visibility">👁️</button>
+                </div>
+              </label>
+              <div style="margin-top:12px; text-align:right">
+                <a href="javascript:void(0)" class="forgot-link" onclick="navigate('forgot-password')"
+                  style="font-size:0.85em; color: var(--accent); text-decoration:none; cursor:pointer;">Forgot
+                  Password?</a>
+              </div>
+              <button type="submit" class="btn-formal"
+                style="width:100%; margin-top:20px; background: var(--accent); border: none; color: white;">Sign
+                In</button>
+            </form>
+          </div>
+          <div
+            style="margin-top:30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); text-align:center;">
+            <p style="color: var(--muted); font-size: 0.9em; margin-bottom: 12px;">New to the platform?</p>
+            <button class="btn-formal nav-btn" data-view="register-counselor"
+              style="width: 100%; background: transparent; border: 1px solid var(--accent); color: var(--accent);">Create
+              Account</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="notifications" class="view">
+      <h2>Notifications</h2>
+      <div id="notification-list"></div>
+      <div id="c-notification-grid" class="grid three" style="margin-top:16px">
+        <div class="panel">
+          <h3>Appointments</h3>
+          <ul id="n-appointments"></ul>
+        </div>
+        <div class="panel">
+          <h3>Payments</h3>
+          <ul id="n-payments"></ul>
+        </div>
+        <div class="panel">
+          <h3>Feedback</h3>
+          <ul id="n-feedback-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="counselor-dashboard" class="view">
+      <div class="panel">
+        <h2>Appointments</h2>
+        <ul id="c-appointments"></ul>
+      </div>
+      <div class="panel">
+        <h2>Payments</h2>
+        <ul id="c-payments"></ul>
+      </div>
+      <div class="panel">
+        <h2>Feedback</h2>
+        <ul id="c-feedback-list"></ul>
+      </div>
+    </section>
+    <section id="admin-dashboard" class="view">
+      <div class="grid two">
+        <div class="panel">
+          <h2 style="color: white">Add Section</h2>
+          <p style="color: var(--muted); margin-bottom: 20px; font-size: 0.85em;">Use the standard registration flows to
+            create new accounts.</p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn-formal nav-btn" data-view="client-register" style="flex: 1">Add User</button>
+            <button class="btn-formal nav-btn" data-view="register-counselor" style="flex: 1">Add Counselor</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 style="color: white; display: flex; justify-content: space-between; align-items: center;">
+            Remove Section
+            <span
+              style="font-size: 0.5em; background: var(--border); padding: 4px 10px; border-radius: 20px; color: white;">
+              Total: <span id="admin-user-count">0</span> Users | <span id="admin-counselor-count">0</span> Counselors
+            </span>
+          </h2>
+          <div style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border);">
+            <h4 style="color: white; margin-bottom: 8px;">Remove User</h4>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <select id="admin-remove-user-select" style="flex: 1">
+                <option value="">Select a user...</option>
+              </select>
+              <button class="btn-formal" style="background: var(--bad); border-color: transparent; color: white;"
+                onclick="onAdminRemoveUser()">Remove</button>
+            </div>
+          </div>
+
+          <div>
+            <h4 style="color: white; margin-bottom: 8px;">Remove Counselor</h4>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <select id="admin-remove-counselor-select" style="flex: 1">
+                <option value="">Select a counselor...</option>
+              </select>
+              <button class="btn-formal" style="background: var(--bad); border-color: transparent; color: white;"
+                onclick="onAdminRemoveCounselor()">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="home" class="view">
+      <div class="hero">
+        <h1 data-i18n="home_h1">Welcome</h1>
+        <p data-i18n="welcome_p">Select an option to begin</p>
+      </div>
+      <div class="options">
+        <div class="card card-common-section" data-view="resources">
+          <h3 data-i18n="common_h3">Common Section</h3>
+          <p class="short" data-i18n="common_p">Advice, videos, relaxation</p>
+          <div class="detail-more">Guides for stress, depression, relationships, work and study pressure, self‑esteem,
+            anger and habits. Includes breathing exercises, mindfulness and a relaxation timer with curated videos.
+          </div>
+          <div class="card-actions">
+            <button class="goto" type="button">Open</button>
+          </div>
+        </div>
+        <div class="card card-mini-chat" data-view="chat">
+          <h3 data-i18n="ai_h3">Mini AI Chat</h3>
+          <p class="short" data-i18n="ai_p">Ask and get guidance</p>
+          <div class="detail-more">Ask quick questions and get supportive tips across anxiety, sadness, anger, sleep,
+            study stress and more. Private by default and focused on practical, short actions.</div>
+          <div class="card-actions">
+            <button class="goto" type="button">Chat</button>
+          </div>
+        </div>
+        <div class="card card-hire-counselor" data-view="counselors">
+          <h3 data-i18n="hire_h3">Hire Counselor</h3>
+          <p class="short" data-i18n="hire_p">Availability, ratings, appointments</p>
+          <div class="detail-more">Browse available counselors, view rating bars for empathy, clarity and impact, book
+            appointments with date and time, and keep payment records for day, week, month or year packages.</div>
+          <div class="card-actions">
+            <button class="goto" type="button">Explore</button>
+          </div>
+        </div>
+      </div>
+      <section class="usage">
+        <h2 data-i18n="usage_h2">Usage Rating</h2>
+        <div class="period-toggle">
+          <label><input type="radio" name="period" value="weekly" checked> Weekly</label>
+          <label><input type="radio" name="period" value="monthly"> Monthly</label>
+        </div>
+        <div id="usage-stars" class="stars"></div>
+        <div id="usage-summary" class="summary"></div>
+      </section>
+      <section class="history">
+        <div class="history-card">
+          <h2 data-i18n="history_h2">Session History</h2>
+          <ul id="session-list"></ul>
+        </div>
+      </section>
+
+    </section>
+
+
+
+    <section id="resources" class="view">
+      <h2>Common Section</h2>
+      <div class="panel">
+        <p>Select the category that best describes your issue from the available categories.</p>
+        <label>Category
+          <select id="resources-category"></select>
+        </label>
+      </div>
+      <div class="grid three">
+        <div class="panel panel-try-yourself">
+          <h3>Try with yourself</h3>
+          <ul id="advice-list" class="advice"></ul>
+        </div>
+        <div class="panel panel-motivation-videos">
+          <h3>Motivation Videos</h3>
+          <ul id="motivational-links" class="links"></ul>
+        </div>
+        <div class="panel panel-relaxation-therapies">
+          <h3>Relaxation Therapies</h3>
+          <ul id="relaxation-links" class="links"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="chat" class="view">
+      <h2>Mini AI Chat</h2>
+      <div class="chat-container panel">
+        <div class="chat-header">
+          <div class="chat-avatar">
+            <img src="picures/Chatbot.jpg" alt="Assistant">
+          </div>
+          <div class="chat-title">
+            <div class="chat-name">MindEase Assistant</div>
+            <div class="chat-sub">Friendly guidance, short practical steps</div>
+          </div>
+          <div class="chat-presence">
+            <span class="presence-dot"></span>
+            <span id="chat-status">Ready</span>
+          </div>
+        </div>
+        <div id="chat-window" class="chat-window"></div>
+        <div class="chat-suggestions">
+          <button type="button" class="chat-chip" data-text="I feel anxious right now">Anxiety</button>
+          <button type="button" class="chat-chip" data-text="I’m feeling sad and stuck">Sadness</button>
+          <button type="button" class="chat-chip" data-text="I’m angry and need to calm down">Anger</button>
+          <button type="button" class="chat-chip" data-text="Tips to focus on study">Study Focus</button>
+          <button type="button" class="chat-chip" data-text="I can’t sleep well">Sleep</button>
+        </div>
+        <form id="chat-form" class="chat-form">
+          <textarea id="chat-input" rows="2" placeholder="Type a message…"></textarea>
+          <div class="chat-actions">
+            <button type="submit">Send</button>
+            <button id="chat-stop" type="button">Stop</button>
+            <button id="chat-clear" type="button">Clear</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="counselors" class="view">
+      <div class="panel panel-client-session">
+        <h3>Client Session Section</h3>
+        <p>Clients can join live sessions with the counselor, utilizing tools such as Google Meet or Zoom. These
+          sessions are designed to be equivalent to physical counseling, but conducted entirely online.</p>
+      </div>
+      <div class="panel">
+        <h3>Available Counselors</h3>
+        <div id="counselor-list" class="counselor-list"></div>
+      </div>
+      <div class="grid two counselors-grid">
+        <div class="panel panel-book-appointment">
+          <h3>Book Appointment</h3>
+          <form id="appointment-form">
+            <select id="appointment-counselor"></select>
+            <input id="appointment-date" type="date">
+            <input id="appointment-time" type="time">
+            <button type="submit">Book</button>
+          </form>
+        </div>
+      </div>
+      <div class="panel panel-payment-options">
+        <h3>Payment Options</h3>
+        <form id="payment-form">
+          <div class="grid">
+            <div>
+              <label>Package
+                <select name="package">
+                  <option value="day">Day</option>
+                  <option value="week">Week</option>
+                  <option value="month">Month</option>
+                  <option value="year">Year</option>
+                </select>
+              </label>
+            </div>
+            <div>
+              <label>Card Number<input name="card" maxlength="19" placeholder="0000 0000 0000 0000"></label>
+            </div>
+            <div>
+              <label>Name on Card<input name="name"></label>
+            </div>
+            <div>
+              <label>Expiry<input name="expiry" placeholder="MM/YY"></label>
+            </div>
+            <div>
+              <label>CVV<input name="cvv" maxlength="4"></label>
+            </div>
+          </div>
+          <button type="submit">Pay</button>
+        </form>
+        <ul id="payment-history"></ul>
+      </div>
+      <div class="panel panel-join-session">
+        <h3>Join Live Session</h3>
+        <p>Enter the Zoom link provided by your counselor to join the session.</p>
+        <form id="join-session-form" style="display:flex; gap:10px; align-items:flex-end;">
+          <label style="flex:1">Zoom Meeting Link
+            <input id="session-link" type="url" placeholder="https://zoom.us/j/..." required>
+          </label>
+          <button type="submit" class="btn-formal" style="margin-bottom:1px">Join Meeting</button>
+        </form>
+        <div style="margin-top:16px; border-top:1px solid #486581; padding-top:12px; text-align:center;">
+          <p style="margin:0 0 10px; font-size:0.9em; color:#9fb3c8;">Finished your session?</p>
+          <button class="nav-btn" data-view="feedback"
+            style="background:#243b55; border:1px solid #486581; color:#cfe0ff;">Give Review</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="settings" class="view">
+      <h2>Settings</h2>
+      <div class="grid two">
+        <div class="panel">
+          <h3>Language</h3>
+          <label>System Language
+            <select id="language">
+              <option value="en">English</option>
+              <option value="si">සිංහල</option>
+            </select>
+          </label>
+          <div style="margin-top:12px">
+            <h4 style="margin:0 0 8px;color:var(--muted)">Per‑section Overrides</h4>
+            <div class="grid two">
+              <label>Home
+                <select id="lang-home">
+                  <option value="">Use default</option>
+                  <option value="en">English</option>
+                  <option value="si">සිංහල</option>
+                </select>
+              </label>
+              <label>Readings
+                <select id="lang-resources">
+                  <option value="">Use default</option>
+                  <option value="en">English</option>
+                  <option value="si">සිංහල</option>
+                </select>
+              </label>
+              <label>Chat
+                <select id="lang-chat">
+                  <option value="">Use default</option>
+                  <option value="en">English</option>
+                  <option value="si">සිංහල</option>
+                </select>
+              </label>
+              <label>Live
+                <select id="lang-counselors">
+                  <option value="">Use default</option>
+                  <option value="en">English</option>
+                  <option value="si">සිංහල</option>
+                </select>
+              </label>
+              <label>Notifications
+                <select id="lang-notifications">
+                  <option value="">Use default</option>
+                  <option value="en">English</option>
+                  <option value="si">සිංහල</option>
+                </select>
+              </label>
+              <label>Settings
+                <select id="lang-settings">
+                  <option value="">Use default</option>
+                  <option value="en">English</option>
+                  <option value="si">සිංහල</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Account</h3>
+          <div class="account-chooser">
+            <div class="account-top">
+              <div id="account-current-email" class="account-email"></div>
+            </div>
+            <div class="account-avatar">
+              <img id="account-avatar" src="picures/user_DP.jpg" alt="avatar">
+            </div>
+            <div id="account-greeting" class="account-greeting"></div>
+            <button id="manage-account" type="button" class="account-manage">Manage your Google Account</button>
+            <div class="account-more">
+              <div id="accounts-list" class="account-list"></div>
+            </div>
+            <div class="account-actions-bottom">
+              <button id="account-add" type="button" class="account-link">➕ Add another account</button>
+              <button id="account-signout-all" type="button" class="account-link"><span class="icon-logout">⎋</span>
+                <span data-i18n="signout">Sign out of all accounts</span></button>
+            </div>
+            <div class="account-legal">
+              <a href="javascript:void(0)" data-view="privacy" class="legal-link" data-i18n="privacy">Privacy Policy</a>
+              · <a href="javascript:void(0)" data-view="terms" class="legal-link" data-i18n="terms">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:16px">
+        <h3>Change Password</h3>
+        <p style="font-size:0.9em; color:var(--muted); margin-bottom:12px">Update your account password regularly to
+          keep your data safe.</p>
+        <form id="change-password-form">
+          <div class="grid">
+            <label>Current Password
+              <div class="password-wrapper">
+                <input name="oldPassword" type="password" required>
+                <button type="button" class="toggle-password">👁️</button>
+              </div>
+            </label>
+            <label>New Password
+              <div class="password-wrapper">
+                <input name="newPassword" type="password" required>
+                <button type="button" class="toggle-password">👁️</button>
+              </div>
+            </label>
+          </div>
+          <button type="submit" class="btn-formal" style="margin-top:12px">Update Password</button>
+        </form>
+      </div>
+
+      <div class="grid two" style="margin-top:16px">
+        <div class="panel">
+          <h3>Theme</h3>
+          <label style="flex-direction:row;align-items:center;gap:10px"><input type="radio" name="theme" id="theme-dark"
+              value="dark" checked> Dark</label>
+          <label style="flex-direction:row;align-items:center;gap:10px"><input type="radio" name="theme"
+              id="theme-light" value="light"> Light</label>
+          <label>Accent Color
+            <input type="color" id="accent-color" value="#6aa5ff">
+          </label>
+          <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" id="reduced-motion">
+            Reduced motion</label>
+        </div>
+        <div class="panel">
+          <h3>Accessibility</h3>
+          <label>Font Size
+            <select id="font-size">
+              <option value="0.9">Small</option>
+              <option value="1" selected>Default</option>
+              <option value="1.15">Large</option>
+              <option value="1.3">Extra Large</option>
+            </select>
+          </label>
+          <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" id="high-contrast"> High
+            contrast</label>
+          <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" id="kbd-hints"> Keyboard
+            navigation hints</label>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:16px">
+        <h3>Calendar</h3>
+        <div class="calendar-wrapper">
+          <div class="cal-header">
+            <button id="cal-prev"
+              style="padding:4px 8px;background:var(--card);border:1px solid #1e2852;color:white">&lt;</button>
+            <span id="cal-month" style="font-weight:bold"></span>
+            <button id="cal-next"
+              style="padding:4px 8px;background:var(--card);border:1px solid #1e2852;color:white">&gt;</button>
+          </div>
+          <div class="cal-grid">
+            <div style="font-weight:bold;color:var(--accent)">S</div>
+            <div style="font-weight:bold;color:var(--accent)">M</div>
+            <div style="font-weight:bold;color:var(--accent)">T</div>
+            <div style="font-weight:bold;color:var(--accent)">W</div>
+            <div style="font-weight:bold;color:var(--accent)">T</div>
+            <div style="font-weight:bold;color:var(--accent)">F</div>
+            <div style="font-weight:bold;color:var(--accent)">S</div>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy" class="view">
+      <div class="panel">
+        <button class="back-btn" data-view="settings">← Back to Settings</button>
+        <h2 data-i18n="privacy">Privacy Policy</h2>
+        <div id="privacy-content" class="legal-text-container"></div>
+      </div>
+    </section>
+
+    <section id="terms" class="view">
+      <div class="panel">
+        <button class="back-btn" data-view="settings">← Back to Settings</button>
+        <h2 data-i18n="terms">Terms of Service</h2>
+        <div id="terms-content" class="legal-text-container"></div>
+      </div>
+    </section>
+
+    <section id="forgot-password" class="view">
+      <div class="panel">
+        <button class="back-btn" data-view="landing-login">← Back to Login</button>
+        <h2 style="color: white">Forgot Password</h2>
+        <p>Enter your email address and select your role to receive a reset code.</p>
+        <form id="forgot-password-form">
+          <label>Email Address<input name="email" type="email" required placeholder="your@email.com"></label>
+          <label>Role
+            <select name="role">
+              <option value="client">Client</option>
+              <option value="counselor">Counselor</option>
+              <option value="admin">Admin</option>
+            </select>
+          </label>
+          <button type="submit" class="btn-formal" style="width:100%; margin-top:12px;">Send Reset Code</button>
+        </form>
+        <div id="forgot-password-success"
+          style="display:none; margin-top:16px; color:var(--good); text-align:center; font-weight:500; border:1px solid var(--good); padding: 12px; border-radius: 8px; background: rgba(59, 211, 128, 0.05)">
+          Reset code sent! Please check your "Sent" emails (mock) for instructions.<br>
+          <small>Use the form below to reset your password.</small>
+        </div>
+
+        <div style="margin-top:24px; border-top: 1px solid var(--border); padding-top:20px;">
+          <h3 style="color: white; margin-bottom: 12px">Reset Password</h3>
+          <form id="reset-password-form">
+            <label>Email Address<input name="email" type="email" required placeholder="your@email.com"></label>
+            <label>Role
+              <select name="role">
+                <option value="client">Client</option>
+                <option value="counselor">Counselor</option>
+                <option value="admin">Admin</option>
+              </select>
+            </label>
+            <label>Reset Code<input name="code" type="text" required maxlength="8"
+                placeholder="Enter 8-digit code"></label>
+            <label>New Password
+              <div class="password-wrapper">
+                <input name="newPassword" type="password" required placeholder="Enter new password">
+                <button type="button" class="toggle-password" title="Toggle Password Visibility">👁️</button>
+              </div>
+            </label>
+            <button type="submit" class="btn-formal" style="width:100%; margin-top:12px;">Update Password</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="counselor-interview" class="view">
+      <div class="panel">
+        <button class="back-btn" data-view="register-counselor">← Back to Registration</button>
+        <h2>Counselor Interview Session</h2>
+        <div class="panel-counselor-access">
+          <p>The interview is a critical part of our verification process. During this session, we will discuss your
+            approach, ethical standards, and experience.</p>
+          <div class="interview-booking-card">
+            <h3>Schedule Your Live Interview</h3>
+            <p>Interviews are conducted via Zoom or Google Meet. Please select your preferred time slot below.</p>
+            <div class="grid" style="margin: 20px 0;">
+              <label>Select Date <input type="date"></label>
+              <label>Select Time <input type="time"></label>
+            </div>
+            <button class="btn-formal"
+              onclick="alert('Interview request sent! Our team will contact you via email shortly.')">Request
+              Official Interview</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="counselor-task" class="view">
+      <div class="panel">
+        <button class="back-btn" data-view="register-counselor">← Back to Registration</button>
+        <div id="exam-intro">
+          <h2>Official Competency Assessment</h2>
+          <p>Please complete this official examination to verify your counseling proficiency. You are required to
+            demonstrate ethical knowledge and clinical judgment.</p>
+          <div class="exam-status-card">
+            <span>Current Status: <strong>Pending Assessment</strong></span>
+            <button id="start-exam-btn" class="btn-formal">Start Official Exam</button>
+          </div>
+        </div>
+        <div id="exam-form-container" class="hidden">
+          <div class="exam-header">
+            <div class="progress-bar-container">
+              <div id="exam-progress" class="progress-bar"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+              <div id="exam-timer">Exam duration: 0m 0s</div>
+              <div style="color:var(--muted); font-size:0.9em;">Assessment in Progress</div>
+            </div>
+          </div>
+          <div id="question-container"></div>
+          <div style="display:flex; justify-content:center; padding: 40px 0;">
+            <button id="submit-exam-btn" class="btn-formal" style="padding: 15px 60px; font-size:1.1em;">Finalize and
+              Submit Application</button>
+          </div>
+        </div>
+        <div id="exam-results" class="hidden">
+          <div class="results-card">
+            <h3 id="results-title"></h3>
+            <div class="score-circle"><span id="results-score">0</span>%</div>
+            <p id="results-msg" style="max-width:500px; margin: 0 auto 30px auto;"></p>
+            <div style="display:flex; gap:15px; justify-content:center;">
+              <button id="retry-exam-btn" class="btn-formal hidden">Retake Assessment</button>
+              <button id="finish-exam-btn" class="btn-formal hidden" data-view="register-counselor">Complete
+                Verification</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="register-counselor" class="view">
+      <h2>Register as Counselor</h2>
+      <div class="panel panel-counselor-access">
+        <h3>Counselor Access Section</h3>
+        <p>To gain access to the Counselor Site, a potential counselor must first undergo an interview and pass the
+          competency task. Following a
+          successful interview and task completion, the counselor will be granted access to the platform.</p>
+        <div id="task-unlock-status" class="status-warning"
+          style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px;">
+          <span style="flex:1;">Professional Requirements: <strong>Competency Task</strong> & <strong>Interview</strong>
+            must be completed.</span>
+          <div style="display:flex; gap:10px;">
+            <button class="btn-formal goto-task" data-view="counselor-task">Start Task</button>
+            <button class="btn-formal goto-interview" data-view="counselor-interview">Book Interview</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel" id="registration-form-panel"
+        style="opacity: 0.5; pointer-events: none; filter: grayscale(0.8);">
+        <form id="counselor-registration-form">
+          <div class="grid">
+            <div><label>Full Name<input name="name" required placeholder="Dr. Jane Smith"></label></div>
+            <div><label>Email Address<input name="email" type="email" placeholder="jane.smith@menta.com"></label></div>
+            <div><label>Password
+                <div class="password-wrapper">
+                  <input name="password" type="password" placeholder="Set a password">
+                  <button type="button" class="toggle-password" title="Toggle Password Visibility">👁️</button>
+                </div>
+              </label></div>
+            <div><label>Date of Birth<input name="dob" type="date"></label></div>
+          </div>
+          <div class="grid">
+            <div><label>Civil Status
+                <select name="civilStatus">
+                  <option value="unmarried">Unmarried</option>
+                  <option value="married">Married</option>
+                  <option value="divorced">Divorced</option>
+                  <option value="widowed">Widowed</option>
+                </select>
+              </label></div>
+            <div><label>NIC Number<input name="nic" placeholder="e.g. 199012345678 or 901234567V"></label></div>
+          </div>
+          <div><label>Education Qualifications<textarea name="education" rows="2"
+                placeholder="Degrees, Certifications..."></textarea></label></div>
+          <div class="grid">
+            <div><label>Experience (Years)<input name="experience" type="number" min="0"></label></div>
+            <div><label>Country<input name="country" placeholder="e.g. Sri Lanka"></label></div>
+          </div>
+          <div class="grid">
+            <div><label>Languages (Comma separated)<input name="languages" placeholder="e.g. English, Sinhala"></label>
+            </div>
+            <div><label>Upload Profile Image<input type="file" id="counselor-file-input" accept="image/*"></label></div>
+          </div>
+          <input type="hidden" name="profileImage" id="counselor-file-path">
+
+          <label style="flex-direction:row;gap:12px;cursor:pointer;margin:12px 0">
+            <input type="checkbox" name="available" checked> <span data-i18n="available_immediately">Available for
+              appointments immediately</span>
+          </label>
+          <button type="submit" class="btn-formal" data-i18n="register_btn"
+            style="width:100%; margin-top:20px;">Register Counselor</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="feedback" class="view">
+      <h2>Give Your Feedback</h2>
+      <div class="panel">
+        <button class="back-btn" data-view="counselors">← Back to Live</button>
+        <p>We value your opinion. Please let us know how your session went.</p>
+        <form id="feedback-form">
+          <label>Select Counselor
+            <select id="feedback-counselor"></select>
+          </label>
+          <div id="feedback-details" style="display:none;">
+
+            <label>Your Feedback
+              <textarea id="feedback-text" rows="6"
+                placeholder="Share your experience with the counselor..."></textarea>
+            </label>
+
+            <button type="button" id="analyze-sentiment-btn" class="btn-formal" style="margin-top:12px; width:100%;">
+              Analyze Sentiment
+            </button>
+
+            <div id="sentiment-result"
+              style="display:none; margin-top:20px; padding:16px; border-radius:8px; text-align:center;">
+              <h4 style="margin:0 0 8px 0;">Analysis Result</h4>
+              <div id="sentiment-label" style="font-size:1.5em; font-weight:bold; margin:8px 0;"></div>
+              <div id="sentiment-emoji" style="font-size:3em; margin:12px 0;"></div>
+            </div>
+
+            <div style="margin-top:20px;">
+              <h4 style="margin:0 0 8px 0;">Rate Qualities</h4>
+              <div class="grid three">
+                <label>Empathy %
+                  <input type="range" id="feedback-empathy" min="0" max="100" step="5" value="80">
+                  <span id="feedback-empathy-val">80%</span>
+                </label>
+                <label>Clarity %
+                  <input type="range" id="feedback-clarity" min="0" max="100" step="5" value="80">
+                  <span id="feedback-clarity-val">80%</span>
+                </label>
+                <label>Impact %
+                  <input type="range" id="feedback-impact" min="0" max="100" step="5" value="80">
+                  <span id="feedback-impact-val">80%</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn-formal" style="margin-top:12px;">Submit Feedback</button>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <div>Life decisions? App advice is just a guide. Always think twice..</div>
+    </footer>
+
+    <script src="assets/app.js?v=58"></script>
+</body>
+
+</html>
