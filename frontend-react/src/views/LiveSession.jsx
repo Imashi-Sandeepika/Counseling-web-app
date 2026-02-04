@@ -55,21 +55,31 @@ const LiveSession = () => {
                 </div>
 
                 <div className="panel">
-                    <h3>Participants (12)</h3>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '20px' }}>
-                        {[...Array(12)].map((_, i) => (
+                    <h3>Participants (8)</h3>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginTop: '20px' }}>
+                        {[
+                            '/images/PereraProfile.jpg',
+                            '/images/SilvaProfile.jpg',
+                            '/images/couns_2_1769248126.jpg',
+                            '/images/girl_3.jpg',
+                            '/images/user_DP.jpg',
+                            '/images/chatbot2.jpg'
+                        ].map((src, i) => (
                             <div key={i} style={{
-                                width: '50px',
-                                height: '50px',
+                                width: '60px',
+                                height: '60px',
                                 borderRadius: '50%',
-                                background: 'var(--card-alt)',
+                                overflow: 'hidden',
                                 border: '2px solid var(--accent)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '1.2em'
+                                background: 'var(--surface-hover)',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
                             }}>
-                                👤
+                                <img
+                                    src={src}
+                                    alt={`Participant ${i}`}
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    onError={(e) => { e.target.onerror = null; e.target.src = '/images/User.jpg' }}
+                                />
                             </div>
                         ))}
                     </div>

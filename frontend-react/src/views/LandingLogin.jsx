@@ -58,42 +58,42 @@ const LandingLogin = () => {
     };
 
     return (
-        <section id="landing-login" className="view active" style={{ padding: '0', maxWidth: '100%', display: 'flex', flexDirection: 'column', minHeight: '80vh' }}>
-            <div className="hero-section" style={{ textAlign: 'center', padding: '60px 20px', background: '#ffffff', borderBottom: '2px solid #000000' }}>
-                <h1 style={{ fontSize: '3.5em', marginBottom: '10px', color: '#000000', letterSpacing: '-1px' }}>Welcome to <span style={{ color: 'var(--accent)' }}>PsyCare</span></h1>
-                <p style={{ color: '#000000', fontSize: '1.2em', maxWidth: '700px', margin: '0 auto', fontWeight: '500' }}>Your dedicated space for mental well-being, professional guidance, and growth.</p>
+        <section id="landing-login" className="view active animate-in" style={{ padding: '0', maxWidth: '100%', display: 'flex', flexDirection: 'column', minHeight: '80vh' }}>
+            <div className="hero-section" style={{ textAlign: 'center', padding: '80px 20px', borderBottom: '1px solid var(--border)' }}>
+                <h1 className="hero-text">Welcome to <span style={{ color: 'var(--accent)' }}>PsyCare</span></h1>
+                <p style={{ color: 'var(--text-muted)', fontSize: '1.25em', maxWidth: '700px', margin: '0 auto', fontWeight: '500' }}>Your dedicated space for mental well-being, professional guidance, and growth.</p>
             </div>
 
-            <div className="login-columns grid three" style={{ padding: '40px', gap: '30px', flex: 1 }}>
+            <div className="login-columns grid grid-cols-3" style={{ padding: '60px 5%', gap: '30px', flex: 1 }}>
                 {/* Client Column */}
                 <div className={`panel login-card ${role === 'client' ? 'active-role' : ''}`} style={{ borderTop: '4px solid var(--accent)', display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                        <div style={{ fontSize: '2.5em', marginBottom: '10px' }}>🌿</div>
-                        <h3>Client Portal</h3>
-                        <p style={{ fontSize: '0.9em', color: 'var(--muted)' }}>For those seeking support and guidance</p>
+                    <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                        <div style={{ fontSize: '3em', marginBottom: '15px' }}>🌿</div>
+                        <h3 style={{ fontSize: '1.5rem', marginBottom: '8px' }}>Client Portal</h3>
+                        <p style={{ color: 'var(--text-muted)' }}>For those seeking support and guidance</p>
                     </div>
 
                     {role === 'client' ? (
                         <div className="form-container">
-                            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', gap: '10px', marginBottom: '25px' }}>
                                 <button className={`tab-btn ${activeTab === 'login' ? 'active' : ''}`} onClick={() => setActiveTab('login')}>Login</button>
                                 <button className={`tab-btn ${activeTab === 'register' ? 'active' : ''}`} onClick={() => setActiveTab('register')}>Register</button>
                             </div>
 
                             {activeTab === 'login' ? (
                                 <form onSubmit={handleLogin}>
-                                    <label>Email<input name="email" type="email" value={formData.email} onChange={handleChange} required /></label>
-                                    <label>Password<input name="password" type="password" value={formData.password} onChange={handleChange} required /></label>
+                                    <label>Email<input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="your@email.com" required /></label>
+                                    <label>Password<input name="password" type="password" value={formData.password} onChange={handleChange} placeholder="••••••••" required /></label>
                                     <button type="submit" className="btn-formal" style={{ width: '100%', marginTop: '10px' }} disabled={loading}>Sign In</button>
-                                    <div style={{ textAlign: 'center', marginTop: '15px' }}>
-                                        <button type="button" onClick={() => navigate('forgot-password')} style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: '0.85em' }}>Forgot Password?</button>
+                                    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                                        <button type="button" onClick={() => navigate('forgot-password')} style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: '0.9em', fontWeight: '600' }}>Forgot Password?</button>
                                     </div>
                                 </form>
                             ) : (
                                 <form onSubmit={handleRegister}>
-                                    <label>Full Name<input name="name" value={formData.name} onChange={handleChange} required /></label>
-                                    <label>Email<input name="email" type="email" value={formData.email} onChange={handleChange} required /></label>
-                                    <label>Password<input name="password" type="password" value={formData.password} onChange={handleChange} required /></label>
+                                    <label>Full Name<input name="name" value={formData.name} onChange={handleChange} placeholder="John Doe" required /></label>
+                                    <label>Email<input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="your@email.com" required /></label>
+                                    <label>Password<input name="password" type="password" value={formData.password} onChange={handleChange} placeholder="••••••••" required /></label>
                                     <button type="submit" className="btn-formal" style={{ width: '100%', marginTop: '10px' }} disabled={loading}>Create Account</button>
                                 </form>
                             )}
@@ -104,21 +104,21 @@ const LandingLogin = () => {
                 </div>
 
                 {/* Counselor Column */}
-                <div className={`panel login-card ${role === 'counselor' ? 'active-role' : ''}`} style={{ borderTop: '4px solid var(--good)', display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                        <div style={{ fontSize: '2.5em', marginBottom: '10px' }}>🤝</div>
-                        <h3>Counselor Portal</h3>
-                        <p style={{ fontSize: '0.9em', color: 'var(--muted)' }}>For verified mental health professionals</p>
+                <div className={`panel login-card ${role === 'counselor' ? 'active-role' : ''}`} style={{ borderTop: '4px solid #40f09a', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                        <div style={{ fontSize: '3em', marginBottom: '15px' }}>🤝</div>
+                        <h3 style={{ fontSize: '1.5rem', marginBottom: '8px' }}>Counselor Portal</h3>
+                        <p style={{ color: 'var(--text-muted)' }}>For verified mental health professionals</p>
                     </div>
 
                     {role === 'counselor' ? (
                         <form onSubmit={handleLogin}>
-                            <label>Professional Email<input name="email" type="email" value={formData.email} onChange={handleChange} required /></label>
-                            <label>Password<input name="password" type="password" value={formData.password} onChange={handleChange} required /></label>
+                            <label>Professional Email<input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="pro@psycare.com" required /></label>
+                            <label>Password<input name="password" type="password" value={formData.password} onChange={handleChange} placeholder="••••••••" required /></label>
                             <button type="submit" className="btn-formal" style={{ width: '100%', marginTop: '10px' }} disabled={loading}>Counselor Log In</button>
-                            <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                                <p style={{ fontSize: '0.8em', color: 'var(--muted)' }}>Not a counselor yet?</p>
-                                <button type="button" onClick={() => navigate('register-counselor')} style={{ color: 'var(--good)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>Register Here</button>
+                            <div style={{ textAlign: 'center', marginTop: '25px' }}>
+                                <p style={{ fontSize: '0.9em', color: 'var(--text-muted)', marginBottom: '8px' }}>Not a counselor yet?</p>
+                                <button type="button" onClick={() => navigate('register-counselor')} style={{ color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: '700', fontSize: '1rem' }}>Register Here</button>
                             </div>
                         </form>
                     ) : (
@@ -128,20 +128,21 @@ const LandingLogin = () => {
 
                 {/* Admin Column */}
                 <div className={`panel login-card ${role === 'admin' ? 'active-role' : ''}`} style={{ borderTop: '4px solid var(--warning)', display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                        <div style={{ fontSize: '2.5em', marginBottom: '10px' }}>🛡️</div>
-                        <h3>Admin Portal</h3>
-                        <p style={{ fontSize: '0.9em', color: 'var(--muted)' }}>Platform management and security</p>
+                    <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                        <div style={{ fontSize: '3em', marginBottom: '15px' }}>🛡️</div>
+                        <h3 style={{ fontSize: '1.5rem', marginBottom: '8px' }}>Admin Portal</h3>
+                        <p style={{ color: 'var(--text-muted)' }}>Platform management and security</p>
                     </div>
 
                     {role === 'admin' ? (
                         <form onSubmit={handleLogin}>
-                            <label>Admin ID<input name="email" type="email" value={formData.email} onChange={handleChange} required /></label>
-                            <label>Security Key<input name="password" type="password" value={formData.password} onChange={handleChange} required /></label>
+                            <label>Admin ID<input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="admin@psycare.com" required /></label>
+                            <label>Security Key<input name="password" type="password" value={formData.password} onChange={handleChange} placeholder="••••••••" required /></label>
                             <button type="submit" className="btn-formal" style={{ width: '100%', marginTop: '10px' }} disabled={loading}>Admin Access</button>
-                            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                            <div style={{ textAlign: 'center', marginTop: '25px' }}>
                                 <button
                                     type="button"
+                                    className="nav-btn"
                                     onClick={() => {
                                         setStore(prev => ({
                                             ...prev,
@@ -149,7 +150,7 @@ const LandingLogin = () => {
                                         }));
                                         navigate('admin-dashboard');
                                     }}
-                                    style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.1)', cursor: 'pointer', fontSize: '10px' }}
+                                    style={{ opacity: 0.3, fontSize: '10px' }}
                                 >
                                     DEBUG: Test Mode Access
                                 </button>

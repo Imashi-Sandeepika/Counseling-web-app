@@ -16,20 +16,22 @@ const Booking = ({ counselor, onBack }) => {
             email: store.user.email
         });
         if (res && res.ok) {
-            alert("Booking request sent! Now proceeding to payment.");
-            // Move to payment view (simulated by a state or separate view)
-            // For this migration, we'll just say it's done or navigate to a mock payment
-            navigate('home'); // Simplified for now
+            alert("Booking request sent!");
+            navigate('home');
         }
         setLoading(false);
     };
 
     return (
-        <div className="panel">
-            <button className="back-btn" onClick={onBack}>← Back</button>
+        <div className="panel animate-in">
+            <button className="back-btn" onClick={onBack}>← Back to Counselors</button>
             <h3>Book Appointment with {counselor.name}</h3>
             <div style={{ display: 'flex', gap: '20px', alignItems: 'center', margin: '20px 0' }}>
-                <img src={counselor.profileImage || '/images/Counselor.jpg'} alt={counselor.name} style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} />
+                <img
+                    src={counselor.profileImage ? (counselor.profileImage.startsWith('/') ? counselor.profileImage : '/' + counselor.profileImage) : '/images/Counselor.jpg'}
+                    alt={counselor.name}
+                    style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }}
+                />
                 <div>
                     <div style={{ fontWeight: 'bold' }}>{counselor.specialty || 'Mental Health Professional'}</div>
                     <div style={{ color: 'var(--muted)', fontSize: '0.9em' }}>{counselor.education}</div>
@@ -38,11 +40,15 @@ const Booking = ({ counselor, onBack }) => {
 
             <form onSubmit={handleSubmit}>
                 <div className="grid two">
-                    <label>Select Date<input type="date" value={formData.date} onChange={e => setFormData({ ...formData, date: e.target.value })} required /></label>
-                    <label>Select Time<input type="time" value={formData.time} onChange={e => setFormData({ ...formData, time: e.target.value })} required /></label>
+                    <label>Select Date
+                        <input type="date" value={formData.date} onChange={e => setFormData({ ...formData, date: e.target.value })} required />
+                    </label>
+                    <label>Select Time
+                        <input type="time" value={formData.time} onChange={e => setFormData({ ...formData, time: e.target.value })} required />
+                    </label>
                 </div>
                 <button type="submit" className="btn-formal" style={{ width: '100%', marginTop: '20px' }} disabled={loading}>
-                    Confirm and Pay
+                    Confirm Appointment
                 </button>
             </form>
         </div>

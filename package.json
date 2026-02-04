@@ -1,4 +1,14 @@
 {
+  "name": "psycare",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "backend": ".venv\\Scripts\\python.exe backend\\app.py",
+    "frontend": "cd frontend-react && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
   "dependencies": {
     "firebase": "^12.8.0"
   }

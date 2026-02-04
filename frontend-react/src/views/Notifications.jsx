@@ -94,8 +94,6 @@ const Notifications = () => {
                                 }}
                             >
                                 <div style={{
-                                    fontSize: '1.5em',
-                                    background: `${getStatusColor(n.status)}15`,
                                     width: '54px',
                                     height: '54px',
                                     borderRadius: '12px',
@@ -103,9 +101,24 @@ const Notifications = () => {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     flexShrink: 0,
-                                    border: `1px solid ${getStatusColor(n.status)}30`
+                                    overflow: 'hidden',
+                                    background: n.related_image ? 'transparent' : `${getStatusColor(n.status)}15`,
+                                    border: n.related_image ? '2px solid var(--border)' : `1px solid ${getStatusColor(n.status)}30`
                                 }}>
-                                    {getStatusIcon(n.status)}
+                                    {n.related_image ? (
+                                        <img
+                                            src={n.related_image.startsWith('/') ? n.related_image : '/' + n.related_image.replace(/^picures\//, 'images/')}
+                                            alt={n.related_person}
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = '';
+                                                e.target.parentElement.innerHTML = getStatusIcon(n.status);
+                                            }}
+                                        />
+                                    ) : (
+                                        <span style={{ fontSize: '1.5em' }}>{getStatusIcon(n.status)}</span>
+                                    )}
                                 </div>
 
                                 <div style={{ flex: 1 }}>
