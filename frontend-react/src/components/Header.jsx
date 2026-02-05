@@ -16,13 +16,21 @@ const Header = () => {
 
     if (store.admin.authenticated) {
         navItems = [
-            { id: 'admin-dashboard', label: 'Admin', icon: '🛡️' },
-            { id: 'notifications', label: dict.nav.notifications, icon: '🔔' }
+            { id: 'admin-dashboard', label: 'Dashboard', icon: '🛡️' },
+            { id: 'admin-users', label: 'Users', icon: '�' },
+            { id: 'admin-counselors', label: 'Counselors', icon: '👨‍⚕️' },
+            { id: 'admin-appointments', label: 'Appointments', icon: '📅' },
+            { id: 'admin-reports', label: 'Reports', icon: '📊' },
+            { id: 'notifications', label: 'Alerts', icon: '🔔' }
         ];
     } else if (store.counselor.authenticated) {
         navItems = [
             { id: 'counselor-dashboard', label: 'Dashboard', icon: '📊' },
-            { id: 'notifications', label: dict.nav.notifications, icon: '🔔' }
+            { id: 'counselor-appointments', label: 'Appointments', icon: '📅' },
+            { id: 'counselor-schedule', label: 'Schedule', icon: '🗓️' },
+            { id: 'counselor-clients', label: 'Clients', icon: '👥' },
+            { id: 'counselor-earnings', label: 'Earnings', icon: '💰' },
+            { id: 'notifications', label: 'Alerts', icon: '🔔' }
         ];
     } else {
         navItems = [
