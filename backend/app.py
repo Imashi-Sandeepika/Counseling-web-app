@@ -105,6 +105,7 @@ class Counselor(db.Model):
     specialty = db.Column(db.String(255))
     education = db.Column(db.Text)
     experience = db.Column(db.Integer)
+    schedule = db.Column(db.Text, default="{}") # JSON string of availability
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Appointment(db.Model):
@@ -326,6 +327,53 @@ def accounts_login():
     db.session.commit()
     return jsonify({"ok": True, "token": token_str, "user": {"name": u.name, "email": u.email}})
 
+@app.route("/api/admin/users", methods=["GET"])
+def admin_list_users():
+    users = User.query.order_by(User.created_at.desc()).all()
+    return jsonify([{
+        "id": u.id,
+        "name": u.name,
+        "email": u.email,
+        "created_at": u.created_at.isoformat() if u.created_at else None,
+        "last_login": u.last_login.isoformat() if u.last_login else None
+    } for u in users])
+
+@app.route("/api/users/<int:uid>", methods=["DELETE"])
+def admin_delete_user(uid):
+    u = User.query.get(uid)
+    if not u:
+        return jsonify({"error": "not_found"}), 404
+    db.session.delete(u)
+    db.session.commit()
+    return jsonify({"ok": True})
+
+@app.route("/api/admin/stats", methods=["GET"])
+def admin_stats():
+    user_count = User.query.count()
+    counselor_count = Counselor.query.count()
+    appt_count = Appointment.query.count()
+    
+    # Simple sentiment breakdown from Feedback
+    feedbacks = Feedback.query.all()
+    sentiment_stats = {"positive": 0, "neutral": 0, "negative": 0}
+    for f in feedbacks:
+        if f.sentiment in sentiment_stats:
+            sentiment_stats[f.sentiment] += 1
+            
+    # Appointment status breakdown
+    appts = Appointment.query.all()
+    status_stats = {}
+    for a in appts:
+        status_stats[a.status] = status_stats.get(a.status, 0) + 1
+
+    return jsonify({
+        "users": user_count,
+        "counselors": counselor_count,
+        "appointments": appt_count,
+        "sentiment": sentiment_stats,
+        "status_distribution": status_stats
+    })
+
 # Counselors
 @app.route("/api/counselors", methods=["GET"])
 def list_counselors():
@@ -349,7 +397,8 @@ def list_counselors():
                 "specialty": c.specialty,
                 "education": c.education,
                 "experience": c.experience
-            }
+            },
+            "schedule": c.schedule
         })
     return jsonify(out)
 
@@ -392,19 +441,55 @@ def add_counselor():
     db.session.commit()
     return jsonify({"id": c.id, "ok": True})
 
+@app.route("/api/counselors/<int:cid>", methods=["PUT"])
+def update_counselor(cid):
+    data = request.get_json(silent=True) or {}
+    c = Counselor.query.get(cid)
+    if not c:
+        return jsonify({"error": "not_found"}), 404
+    
+    if "name" in data: c.name = data["name"]
+    if "available" in data: c.available = bool(data["available"])
+    if "email" in data: c.email = data["email"]
+    if "specialty" in data: c.specialty = data["specialty"]
+    if "experience" in data: c.experience = int(data["experience"])
+    if "schedule" in data: c.schedule = data["schedule"]
+    # Add other fields as needed
+    
+    db.session.commit()
+    return jsonify({"ok": True})
+
 @app.route("/api/counselors/<int:cid>", methods=["DELETE"])
 def delete_counselor(cid):
     c = Counselor.query.get(cid)
     if not c:
         return jsonify({"error": "not_found"}), 404
-        
-    # Delete associated appointments
     Appointment.query.filter_by(counselor_id=cid).delete()
-    
-    # Delete the counselor
     db.session.delete(c)
     db.session.commit()
     return jsonify({"ok": True})
+
+@app.route("/api/counselor/clients", methods=["GET"])
+def counselor_clients():
+    cid = request.args.get("cid")
+    if not cid:
+        return jsonify({"error": "cid_required"}), 400
+    
+    # Find all appointments for this counselor
+    appts = Appointment.query.filter_by(counselor_id=cid).all()
+    client_emails = list(set([a.user_email for a in appts if a.user_email]))
+    
+    out = []
+    for email in client_emails:
+        u = User.query.filter_by(email=email).first()
+        last_appt = Appointment.query.filter_by(counselor_id=cid, user_email=email).order_by(Appointment.ts.desc()).first()
+        out.append({
+            "name": u.name if u else "Guest User",
+            "email": email,
+            "last_session": last_appt.date if last_appt else None,
+            "total_sessions": Appointment.query.filter_by(counselor_id=cid, user_email=email, status="completed").count()
+        })
+    return jsonify(out)
 
 # Appointments
 @app.route("/api/appointments", methods=["GET"])

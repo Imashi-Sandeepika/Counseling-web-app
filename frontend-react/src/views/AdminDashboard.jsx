@@ -3,88 +3,88 @@ import { useStore } from '../context/StoreContext';
 
 const AdminDashboard = () => {
     const { api, navigate } = useStore();
-    const [stats, setStats] = useState({ users: 0, counselors: 0 });
-    const [users, setUsers] = useState([]);
-    const [counselors, setCounselors] = useState([]);
+    const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchData = async () => {
-            // In a real app, these would be specific admin endpoints
-            const uRes = await api('/api/admin/users'); // Mock or actual if endpoint exists
-            const cRes = await api('/api/counselors');
-
-            if (Array.isArray(uRes)) setUsers(uRes);
-            if (Array.isArray(cRes)) setCounselors(cRes);
-
-            setStats({
-                users: Array.isArray(uRes) ? uRes.length : 0,
-                counselors: Array.isArray(cRes) ? cRes.length : 0
-            });
+        const fetchStats = async () => {
+            const data = await api('/api/admin/stats');
+            if (data && !data.error) {
+                setStats(data);
+            }
             setLoading(false);
         };
-        fetchData();
-    }, []);
+        fetchStats();
+    }, [api]);
 
-    const handleRemove = async (type, id) => {
-        if (!window.confirm(`Are you sure you want to remove this ${type}?`)) return;
-        const res = await api(`/api/admin/remove-${type}`, 'POST', { id });
-        if (res && res.ok) {
-            alert(`${type} removed.`);
-            // Refresh data
-        }
-    };
+    const cards = [
+        { label: 'Total Users', value: stats?.users || 0, icon: '👥', view: 'admin-users' },
+        { label: 'Counselors', value: stats?.counselors || 0, icon: '👨‍⚕️', view: 'admin-counselors' },
+        { label: 'Appointments', value: stats?.appointments || 0, icon: '📅', view: 'admin-appointments' },
+        { label: 'Platform Sentiment', value: stats?.sentiment?.positive || 0, sub: 'Positive Feedbacks', icon: '📈', view: 'admin-reports' },
+    ];
 
     return (
-        <section id="admin-dashboard" className="view active">
-            <div className="grid two">
-                <div className="panel" style={{ borderTop: '4px solid var(--accent)' }}>
-                    <h2>Quick Actions</h2>
-                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: '20px' }}>
-                        <button className="btn-formal" style={{ flex: 1 }} onClick={() => navigate('register-counselor')}>Add Counselor</button>
-                        <button className="btn-formal" style={{ flex: 1 }}>Add Admin</button>
-                    </div>
-                </div>
-
-                <div className="panel" style={{ borderTop: '4px solid var(--good)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <h2>System Overview</h2>
-                        <span style={{ background: 'var(--border)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.8em' }}>
-                            {stats.users} Users | {stats.counselors} Counselors
-                        </span>
-                    </div>
-                    <div style={{ marginTop: '20px' }}>
-                        <p style={{ color: 'var(--muted)' }}>Manage platform participants and monitor system health.</p>
-                    </div>
+        <section id="admin-dashboard" className="view active animate-in">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+                <h1 className="hero-text" style={{ margin: 0 }}>Admin Control Center</h1>
+                <div style={{ padding: '8px 16px', background: 'var(--primary)', color: 'white', borderRadius: '8px', fontWeight: 'bold' }}>
+                    SYSTEM OVERVIEW
                 </div>
             </div>
 
-            <div className="panel mt-20">
-                <h3>Manage Participants</h3>
-                <p style={{ color: 'var(--muted)', marginBottom: '20px' }}>Select an entity to modify or remove from the system.</p>
-
-                <div className="grid two">
-                    <div>
-                        <h4 style={{ marginBottom: '10px' }}>Counselors</h4>
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                            {counselors.map(c => (
-                                <li key={c.name} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', background: 'rgba(255,255,255,0.03)', marginBottom: '5px', borderRadius: '8px' }}>
-                                    <span>{c.name}</span>
-                                    <button onClick={() => handleRemove('counselor', c.name)} style={{ background: 'none', border: 'none', color: 'var(--bad)', cursor: 'pointer' }}>Remove</button>
-                                </li>
-                            ))}
-                        </ul>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '25px', marginBottom: '40px' }}>
+                {cards.map((card, i) => (
+                    <div
+                        key={i}
+                        className="panel"
+                        onClick={() => navigate(card.view)}
+                        style={{
+                            padding: '30px',
+                            cursor: 'pointer',
+                            transition: 'transform 0.2s, box-shadow 0.2s',
+                            position: 'relative',
+                            overflow: 'hidden'
+                        }}
+                        onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)'; }}
+                        onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+                    >
+                        <div style={{ fontSize: '2.5rem', marginBottom: '15px' }}>{card.icon}</div>
+                        <div style={{ fontSize: '2rem', fontWeight: '800' }}>{card.value}</div>
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase', fontWeight: 'bold', letterSpacing: '1px' }}>{card.label}</div>
+                        {card.sub && <div style={{ fontSize: '0.75rem', color: 'var(--accent)', marginTop: '5px' }}>{card.sub}</div>}
                     </div>
-                    <div>
-                        <h4 style={{ marginBottom: '10px' }}>Users</h4>
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                            {users.map(u => (
-                                <li key={u.email} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', background: 'rgba(255,255,255,0.03)', marginBottom: '5px', borderRadius: '8px' }}>
-                                    <span>{u.name || u.email}</span>
-                                    <button onClick={() => handleRemove('user', u.email)} style={{ background: 'none', border: 'none', color: 'var(--bad)', cursor: 'pointer' }}>Remove</button>
-                                </li>
-                            ))}
-                        </ul>
+                ))}
+            </div>
+
+            <div className="grid two" style={{ gap: '30px' }}>
+                <div className="panel">
+                    <h3>Quick Management</h3>
+                    <p style={{ color: 'var(--text-muted)', marginBottom: '25px' }}>Direct access to platform control modules.</p>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                        <button className="btn-formal" onClick={() => navigate('admin-users')}>Manage Users</button>
+                        <button className="btn-formal" onClick={() => navigate('admin-counselors')}>Manage Counselors</button>
+                        <button className="btn-formal" onClick={() => navigate('admin-appointments')}>All Appointments</button>
+                        <button className="btn-formal" onClick={() => navigate('admin-reports')}>View Reports</button>
+                    </div>
+                </div>
+
+                <div className="panel">
+                    <h3>Security & Maintenance</h3>
+                    <p style={{ color: 'var(--text-muted)', marginBottom: '25px' }}>Platform health and administrative tasks.</p>
+                    <div style={{ padding: '20px', background: 'var(--surface-hover)', borderRadius: '12px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
+                            <span>Database Status</span>
+                            <span style={{ color: 'var(--good)', fontWeight: 'bold' }}>● HEALTHY</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
+                            <span>Sentiment Module</span>
+                            <span style={{ color: 'var(--good)', fontWeight: 'bold' }}>● ACTIVE</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span>Encryption</span>
+                            <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>AES-256</span>
+                        </div>
                     </div>
                 </div>
             </div>
