@@ -6,6 +6,7 @@ import Home from './views/Home';
 import Resources from './views/Resources';
 import Chat from './views/Chat';
 import Counselors from './views/Counselors';
+import MyBookings from './views/MyBookings';
 import Settings from './views/Settings';
 import Notifications from './views/Notifications';
 import RegisterCounselor from './views/RegisterCounselor';
@@ -31,6 +32,7 @@ const App = () => {
       case 'resources': return <Resources />;
       case 'chat': return <Chat />;
       case 'counselors': return <Counselors />;
+      case 'my-bookings': return <MyBookings />;
       case 'settings': return <Settings />;
       case 'register-counselor': return <RegisterCounselor />;
       case 'feedback': return <Feedback />;
