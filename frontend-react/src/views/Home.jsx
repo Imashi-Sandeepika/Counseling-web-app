@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStore } from '../context/StoreContext';
 import { i18n } from '../i18n';
 
@@ -6,28 +6,24 @@ const Home = () => {
     const { store, navigate, api } = useStore();
     const lang = store.settings.language || 'en';
     const dict = i18n[lang] || i18n.en;
+    const [sessions, setSessions] = useState([]);
 
-    const cards = [
-        { id: 'resources', title: dict.ui.common_h3, icon: '📚', desc: dict.ui.common_p, cls: 'card-common-section' },
-        { id: 'chat', title: dict.ui.ai_h3, icon: '🤖', desc: dict.ui.ai_p, cls: 'card-mini-chat' },
-        { id: 'counselors', title: dict.ui.hire_h3, icon: '👨‍⚕️', desc: dict.ui.hire_p, cls: 'card-hire-counselor' }
-    ];
+    useEffect(() => {
+        const loadSessions = async () => {
+            const data = await api(`/api/sessions?email=${store.user.email}`);
+            if (Array.isArray(data)) {
+                setSessions(data.slice(0, 3));
+            }
+        };
+        loadSessions();
+    }, [store.user.email]);
+
 
     return (
         <section id="home" className="view active animate-in">
             <div className="hero" style={{ marginBottom: '40px' }}>
                 <h1 className="hero-text" style={{ fontSize: '3.5rem' }}>{dict.ui.home_h1}, {store.user.name || store.user.email.split('@')[0]}</h1>
                 <p style={{ color: 'var(--text-muted)', fontSize: '1.25rem' }}>{dict.ui.welcome_p}</p>
-            </div>
-
-            <div className="grid grid-cols-3" style={{ marginBottom: '40px' }}>
-                {cards.map(card => (
-                    <div key={card.id} className={`card ${card.cls}`} onClick={() => navigate(card.id)} style={{ cursor: 'pointer', minHeight: '280px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '30px' }}>
-                        <div style={{ position: 'absolute', top: '30px', left: '30px', fontSize: '2.5rem', background: 'rgba(255,255,255,0.1)', padding: '10px', borderRadius: '15px', backdropFilter: 'blur(5px)' }}>{card.icon}</div>
-                        <h3 style={{ fontSize: '1.6rem', marginBottom: '10px' }}>{card.title}</h3>
-                        <p className="short" style={{ opacity: 0.9, fontSize: '1rem', lineHeight: '1.4' }}>{card.desc}</p>
-                    </div>
-                ))}
             </div>
 
             <div className="grid grid-cols-1">
@@ -63,6 +59,33 @@ const Home = () => {
                     </div>
                 </section>
             </div>
+
+            {sessions.length > 0 && (
+                <div className="grid grid-cols-1" style={{ marginTop: '40px' }}>
+                    <section className="panel animate-in">
+                        <h3 style={{ marginBottom: '20px' }}>Recent Sessions</h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                            {sessions.map((s, i) => {
+                                const date = new Date(s.start);
+                                return (
+                                    <div key={i} className="panel-lite" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px' }}>
+                                        <div>
+                                            <div style={{ fontWeight: '600', marginBottom: '5px' }}>{s.category || 'Session'}</div>
+                                            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                                                {s.counselorName && `with ${s.counselorName}`}
+                                                {s.notes && ` - ${s.notes.substring(0, 50)}${s.notes.length > 50 ? '...' : ''}`}
+                                            </div>
+                                        </div>
+                                        <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                                            {date.toLocaleDateString()}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </section>
+                </div>
+            )}
         </section>
     );
 };
