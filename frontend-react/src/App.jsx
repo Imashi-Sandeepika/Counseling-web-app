@@ -15,6 +15,17 @@ import ForgotPassword from './views/ForgotPassword';
 import AdminDashboard from './views/AdminDashboard';
 import CounselorDashboard from './views/CounselorDashboard';
 
+// Counselor Views
+import CounselorAppointments from './views/CounselorAppointments';
+import CounselorSchedule from './views/CounselorSchedule';
+import CounselorClients from './views/CounselorClients';
+import CounselorEarnings from './views/CounselorEarnings';
+
+// Admin Views
+import AdminUsers from './views/AdminUsers';
+import AdminCounselors from './views/AdminCounselors';
+import AdminAppointments from './views/AdminAppointments';
+import AdminReports from './views/AdminReports';
 
 import Privacy from './views/Privacy';
 import Terms from './views/Terms';
@@ -39,6 +50,18 @@ const App = () => {
       case 'forgot-password': return <ForgotPassword />;
       case 'admin-dashboard': return <AdminDashboard />;
       case 'counselor-dashboard': return <CounselorDashboard />;
+
+      // Counselor Routes
+      case 'counselor-appointments': return <CounselorAppointments />;
+      case 'counselor-schedule': return <CounselorSchedule />;
+      case 'counselor-clients': return <CounselorClients />;
+      case 'counselor-earnings': return <CounselorEarnings />;
+
+      // Admin Routes
+      case 'admin-users': return <AdminUsers />;
+      case 'admin-counselors': return <AdminCounselors />;
+      case 'admin-appointments': return <AdminAppointments />;
+      case 'admin-reports': return <AdminReports />;
 
       case 'privacy': return <Privacy />;
       case 'terms': return <Terms />;
