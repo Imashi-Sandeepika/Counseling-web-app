@@ -35,12 +35,11 @@ const Header = () => {
     } else {
         navItems = [
             { id: 'home', label: 'Home', icon: '🏠' },
-            { id: 'my-bookings', label: 'Bookings', icon: '📅' },
-            { id: 'live-session', label: 'Breathing', icon: '🌬️' },
             { id: 'resources', label: 'Resources', icon: '📚' },
             { id: 'chat', label: 'AI Chat', icon: '🤖' },
             { id: 'counselors', label: 'Counselors', icon: '👨‍⚕️' },
-            { id: 'notifications', label: 'Alerts', icon: '🔔' }
+            { id: 'notifications', label: 'Alerts', icon: '🔔' },
+            { id: 'settings', label: 'settings', icon: '⚙️' }
         ];
     }
 
@@ -82,27 +81,11 @@ const Header = () => {
                             gap: '6px'
                         }}
                     >
-                        <span>{item.icon}</span>
                         <span>{item.label}</span>
+                        <span>{item.icon}</span>
                     </button>
                 ))}
 
-                <div style={{ width: '1px', height: '24px', background: 'var(--border)', margin: '0 8px' }}></div>
-
-                <button
-                    className={`nav-btn ${activeView === 'settings' ? 'active' : ''}`}
-                    onClick={() => navigate('settings')}
-                    style={{
-                        padding: '8px 12px',
-                        fontSize: '0.85rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px'
-                    }}
-                >
-                    <span>⚙️</span>
-                    <span>{dict.nav.settings}</span>
-                </button>
 
                 <button
                     className="nav-btn"
@@ -117,8 +100,8 @@ const Header = () => {
                         gap: '6px'
                     }}
                 >
-                    <span>🚪</span>
                     <span>Sign Out</span>
+                    <span>🚪</span>
                 </button>
             </nav>
         </header>

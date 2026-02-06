@@ -21,7 +21,7 @@ const RegisterCounselor = () => {
 
     const taskPassed = store.counselorVerified;
     const interviewPassed = store.counselorInterviewed;
-    const isUnlocked = taskPassed && interviewPassed;
+    const isUnlocked = taskPassed;
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -34,7 +34,7 @@ const RegisterCounselor = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isUnlocked) {
-            alert("Please complete both the Competency Task and Interview first.");
+            alert("Please complete the Competency Task first to unlock registration.");
             return;
         }
         setLoading(true);
@@ -43,7 +43,10 @@ const RegisterCounselor = () => {
             alert("Registration successful! You can now log in.");
             navigate('landing-login');
         } else {
-            alert("Registration failed. Please try again.");
+            const msg = res?.error?.includes('TypeError: Failed to fetch')
+                ? "Server is currently unavailable. Please try again later."
+                : (res?.error || "Registration failed. Please try again.");
+            alert(msg);
         }
         setLoading(false);
     };
@@ -79,7 +82,7 @@ const RegisterCounselor = () => {
                             <div>
                                 <div style={{ fontWeight: 'bold', fontSize: '0.95em' }}>Competency Task</div>
                                 <div style={{ fontSize: '0.8em', color: taskPassed ? 'var(--good)' : 'var(--accent)' }}>
-                                    {taskPassed ? 'Completed' : 'Action Required'}
+                                    {taskPassed ? 'Completed' : '80% Marks Required to Pass'}
                                 </div>
                             </div>
                         </div>
@@ -116,8 +119,8 @@ const RegisterCounselor = () => {
                             </div>
                             <div>
                                 <div style={{ fontWeight: 'bold', fontSize: '0.95em' }}>Official Interview</div>
-                                <div style={{ fontSize: '0.8em', color: interviewPassed ? 'var(--good)' : 'var(--accent)' }}>
-                                    {interviewPassed ? 'Verified' : taskPassed ? 'Ready to Book' : 'Pending Task'}
+                                <div style={{ fontSize: '0.8em', color: interviewPassed ? 'var(--good)' : 'rgba(255,255,255,0.4)' }}>
+                                    {interviewPassed ? 'Verified' : 'Can be completed after registration'}
                                 </div>
                             </div>
                         </div>

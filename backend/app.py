@@ -30,7 +30,7 @@ except ImportError as e:
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "database", "mental_health_v2.db")
-UPLOAD_FOLDER = os.path.join(PROJECT_ROOT, "frontend", "images")
+UPLOAD_FOLDER = os.path.join(PROJECT_ROOT, "frontend-react", "public", "images")
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
 app = Flask(__name__)
@@ -204,7 +204,12 @@ class AdminToken(db.Model):
 
 @app.route("/")
 def index():
-    resp = send_file(os.path.join(PROJECT_ROOT, "frontend", "index.html"))
+    # Try to serve the React index.html if it exists, otherwise fallback to old frontend
+    react_index = os.path.join(PROJECT_ROOT, "frontend-react", "index.html")
+    if os.path.exists(react_index):
+        resp = send_file(react_index)
+    else:
+        resp = send_file(os.path.join(PROJECT_ROOT, "frontend", "index.html"))
     resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
     resp.headers["Pragma"] = "no-cache"
     resp.headers["Expires"] = "0"
@@ -234,11 +239,11 @@ def serve_assets(path):
 
 @app.route("/images/<path:path>")
 def serve_images(path):
-    resp = send_file(os.path.join(PROJECT_ROOT, "frontend", "images", path))
-    resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
-    resp.headers["Pragma"] = "no-cache"
-    resp.headers["Expires"] = "0"
-    return resp
+    # Try frontend-react first, then fallback to old frontend
+    react_img = os.path.join(PROJECT_ROOT, "frontend-react", "public", "images", path)
+    if os.path.exists(react_img):
+        return send_file(react_img)
+    return send_file(os.path.join(PROJECT_ROOT, "frontend", "images", path))
 
 # Keep old route for backwards compatibility
 @app.route("/picures/<path:path>")
@@ -295,15 +300,27 @@ def add_account():
     password = data.get("password") or ""
     if not email or "@" not in email:
         return jsonify({"error": "invalid_email"}), 400
+    
+    # Check if user already exists
+    existing_user = User.query.filter_by(email=email).first()
+    if existing_user:
+        return jsonify({"error": "email_in_use", "ok": False}), 400
+
     # Create/ensure Account row
     if not Account.query.filter_by(email=email).first():
         db.session.add(Account(email=email))
+    
     # Create User row if password provided
-    u = User.query.filter_by(email=email).first()
-    if not u and password:
+    if password:
         u = User(name=name, email=email, password_hash=generate_password_hash(password))
         db.session.add(u)
-    db.session.commit()
+    
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "db_error", "msg": str(e), "ok": False}), 500
+        
     return jsonify({"ok": True})
 
 @app.route("/api/accounts", methods=["DELETE"])
@@ -327,25 +344,9 @@ def accounts_login():
     db.session.commit()
     return jsonify({"ok": True, "token": token_str, "user": {"name": u.name, "email": u.email}})
 
-@app.route("/api/admin/users", methods=["GET"])
-def admin_list_users():
-    users = User.query.order_by(User.created_at.desc()).all()
-    return jsonify([{
-        "id": u.id,
-        "name": u.name,
-        "email": u.email,
-        "created_at": u.created_at.isoformat() if u.created_at else None,
-        "last_login": u.last_login.isoformat() if u.last_login else None
-    } for u in users])
 
-@app.route("/api/users/<int:uid>", methods=["DELETE"])
-def admin_delete_user(uid):
-    u = User.query.get(uid)
-    if not u:
-        return jsonify({"error": "not_found"}), 404
-    db.session.delete(u)
-    db.session.commit()
-    return jsonify({"ok": True})
+
+
 
 @app.route("/api/admin/stats", methods=["GET"])
 def admin_stats():

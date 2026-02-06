@@ -39,7 +39,10 @@ const LandingLogin = () => {
                 navigate('admin-dashboard', true);
             }
         } else {
-            alert("Invalid credentials. Please try again.");
+            const msg = res?.error?.includes('TypeError: Failed to fetch')
+                ? "Server is currently unavailable. Please try again later."
+                : "Invalid credentials. Please try again.";
+            alert(msg);
         }
         setLoading(false);
     };
@@ -52,7 +55,15 @@ const LandingLogin = () => {
             alert("Registration successful! Please log in.");
             setActiveTab('login');
         } else {
-            alert("Registration failed. Email might be in use.");
+            let msg = "Registration failed.";
+            if (res?.error === 'email_in_use') {
+                msg = "This email is already in use. Please try logging in.";
+            } else if (res?.error && res.error.includes('TypeError: Failed to fetch')) {
+                msg = "Server is currently unavailable. Please try again later.";
+            } else if (res?.error) {
+                msg = `Error: ${res.error}`;
+            }
+            alert(msg);
         }
         setLoading(false);
     };

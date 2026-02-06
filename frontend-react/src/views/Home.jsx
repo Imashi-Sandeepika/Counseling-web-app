@@ -60,6 +60,25 @@ const Home = () => {
                 </section>
             </div>
 
+            <div className="grid grid-cols-2" style={{ marginTop: '30px', gap: '20px' }}>
+                <div className="card card-common-section" onClick={() => navigate('resources')} style={{ cursor: 'pointer', minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                    <h3 style={{ margin: 0 }}>Resources</h3>
+                    <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>Knowledge for your growth</p>
+                </div>
+                <div className="card card-mini-chat" onClick={() => navigate('chat')} style={{ cursor: 'pointer', minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                    <h3 style={{ margin: 0 }}>AI Chat</h3>
+                    <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>Always here to listen</p>
+                </div>
+                <div className="card card-hire-counselor" onClick={() => navigate('counselors')} style={{ cursor: 'pointer', minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                    <h3 style={{ margin: 0 }}>Counselors</h3>
+                    <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>Professional guidance</p>
+                </div>
+                <div className="card card-live-now" onClick={() => navigate('live-session')} style={{ cursor: 'pointer', minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                    <h3 style={{ margin: 0 }}>Breathing</h3>
+                    <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>Relieve stress instantly</p>
+                </div>
+            </div>
+
             {sessions.length > 0 && (
                 <div className="grid grid-cols-1" style={{ marginTop: '40px' }}>
                     <section className="panel animate-in">

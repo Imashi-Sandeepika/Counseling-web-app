@@ -31,8 +31,8 @@ This guide will help you start both the **Backend (Flask)** and the **Frontend (
 
 1.  **Open a NEW terminal** (leave the backend running) and navigate to the `frontend-react` folder:
     ```bash
-    cd frontend-react
-    ```
+       cd frontend-react
+ ```
 2.  **Install dependencies** (if not already installed):
     ```bash
     npm install
