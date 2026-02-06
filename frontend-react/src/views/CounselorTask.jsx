@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from '../context/StoreContext';
 
 const MCQS = [
-<<<<<<< HEAD
-    { q: "A client tells you they are planning to hurt themselves tonight. What is the most important first step for a counselor?", a: ["Assess the immediate risk and ensure a safety plan is in place.", "Ask them about their childhood experiences.", "Tell them to try and think more positively.", "End the session early to give them space."], c: 0 },
-=======
     { q: "A client tells you they are planning to hurt themselves tonight. What is the most important first step for a counselor?", a: ["Ask them about their childhood experiences.", "Assess the immediate risk and ensure a safety plan is in place.", "Tell them to try and think more positively.", "End the session early to give them space."], c: 1 },
     { q: "Which of these is an example of an 'Open-Ended' question used in counseling?", a: ["Did you have a good day yesterday?", "Are you feeling angry right now?", "Can you tell me more about how that situation made you feel?", "Do you want to stop the session now?"], c: 2 },
     { q: "What does 'Empathy' mean in a counseling context?", a: ["Feeling sorry for the client and their problems.", "Giving the client money or physical help.", "Understanding the client's experience from their point of view.", "Agreeing with everything the client says."], c: 2 },
@@ -15,7 +12,6 @@ const MCQS = [
     { q: "When should a counselor break confidentiality?", a: ["Whenever the client says something interesting.", "When there is a serious risk of harm to the client or someone else.", "If the counselor's boss asks for the details for fun.", "If the client stops paying for the sessions."], c: 1 },
     { q: "What is a 'Boundary' in counseling?", a: ["A physical wall between the counselor and client.", "The limit of the professional relationship (e.g., no social media contact).", "The city limit where the counselor works.", "The number of words a client is allowed to speak."], c: 1 },
     { q: "Which approach focuses on changing negative thought patterns to improve behavior?", a: ["Psychoanalysis", "Cognitive Behavioral Therapy (CBT)", "Person-Centered Therapy", "Art Therapy"], c: 1 },
->>>>>>> 05d6977ec0eb8bed1997790503561c7873059bbc
 ];
 
 const CounselorTask = () => {
@@ -72,14 +68,10 @@ const CounselorTask = () => {
 
                 {step === 'exam' && (
                     <div>
-<<<<<<< HEAD
                         <div style={{ background: 'rgba(50, 222, 132, 0.1)', border: '1px solid var(--accent)', padding: '12px', borderRadius: '10px', marginBottom: '20px', textAlign: 'center', fontSize: '0.95em' }}>
                             <strong>Passing Requirement:</strong> You must earn at least <strong>80% marks</strong> to pass this examination and proceed with registration.
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', position: 'sticky', top: '0', background: 'var(--card)', padding: '10px', borderRadius: '8px', zIndex: 10 }}>
-=======
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', sticky: 'top', background: 'var(--card)', padding: '10px', borderRadius: '8px', zIndex: 10 }}>
->>>>>>> 05d6977ec0eb8bed1997790503561c7873059bbc
                             <div>Time: {Math.floor(elapsed / 60)}m {elapsed % 60}s</div>
                             <div>Progress: {Math.round((Object.keys(answers).length / MCQS.length) * 100)}%</div>
                         </div>
