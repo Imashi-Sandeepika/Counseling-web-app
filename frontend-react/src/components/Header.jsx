@@ -34,12 +34,12 @@ const Header = () => {
         ];
     } else {
         navItems = [
-            { id: 'home', label: 'Home', icon: '🏠' },
-            { id: 'resources', label: 'Resources', icon: '📚' },
-            { id: 'chat', label: 'AI Chat', icon: '🤖' },
-            { id: 'counselors', label: 'Counselors', icon: '👨‍⚕️' },
-            { id: 'notifications', label: 'Alerts', icon: '🔔' },
-            { id: 'settings', label: 'settings', icon: '⚙️' }
+            { id: 'home', label: dict.nav.home, icon: '🏠' },
+            { id: 'resources', label: dict.nav.resources, icon: '📚' },
+            { id: 'chat', label: dict.nav.chat, icon: '🤖' },
+            { id: 'counselors', label: dict.nav.counselors, icon: '👨‍⚕️' },
+            { id: 'notifications', label: dict.nav.notifications, icon: '🔔' },
+            { id: 'settings', label: dict.nav.settings, icon: '⚙️' }
         ];
     }
 
@@ -100,7 +100,7 @@ const Header = () => {
                         gap: '6px'
                     }}
                 >
-                    <span>Sign Out</span>
+                    <span>{dict.nav.signout}</span>
                     <span>🚪</span>
                 </button>
             </nav>

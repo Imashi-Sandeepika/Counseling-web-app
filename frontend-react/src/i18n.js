@@ -2,19 +2,24 @@ export const i18n = {
     en: {
         nav: {
             home: "Home",
-            resources: "Readings",
-            chat: "ChatUs",
-            counselors: "Live",
+            resources: "Resources",
+            chat: "AI Chat",
+            counselors: "Counselors",
+            bookings: "Bookings",
+            breathing: "Breathing",
+            alerts: "Alerts",
             "register-counselor": "Register Counselor",
-            notifications: "Notifications",
-            settings: "Settings"
+            notifications: "Alerts",
+            settings: "settings",
+            signout: "Sign Out"
         },
         titles: {
-            notifications: "Notifications",
+            notifications: "Alerts",
             home: "Welcome",
-            resources: "Common Section",
-            chat: "Mini AI Chat",
-            counselors: "Hire Counselor",
+            resources: "Resources",
+            chat: "AI Chat",
+            counselors: "Counselors",
+            breathing: "Breathing",
             settings: "Settings",
             "register-counselor": "Register as Counselor"
         },
@@ -35,7 +40,11 @@ export const i18n = {
             add_acc: "Add another account",
             available_immediately: "Available for appointments immediately",
             register_btn: "Register Counselor",
-            back_to_settings: "← Back to Settings"
+            back_to_settings: "← Back to Settings",
+            resources_desc: "Knowledge for your growth",
+            chat_desc: "Always here to listen",
+            counselors_desc: "Professional guidance",
+            breathing_desc: "Relieve stress instantly"
         },
         chat: {
             welcome: "Hi! I'm your MindEase Assistant. How are you feeling today?",
@@ -59,19 +68,24 @@ export const i18n = {
     si: {
         nav: {
             home: "මුල් පිටුව",
-            resources: "කියවීම්",
-            chat: "සංවාදය",
-            counselors: "සජීවී",
-            "register-counselor": "උපදේශක ලියාපදිංචි කිරීම",
-            notifications: "නිවේදන",
-            settings: "සැකසුම්"
+            resources: "සම්පත්",
+            chat: "AI සංවාදය",
+            counselors: "උපදේශකයින්",
+            bookings: "වෙන් කිරීම්",
+            breathing: "හුස්ම ගැනීම",
+            alerts: "ඇඟවීම්",
+            "register-counselor": "උපදේශක ලියාපදිංචිය",
+            notifications: "ඇඟවීම්",
+            settings: "සැකසුම්",
+            signout: "ඉවත්වන්න"
         },
         titles: {
-            notifications: "නිවේදන",
+            notifications: "ඇඟවීම්",
             home: "සාදරයෙන් පිළිගනිමු",
-            resources: "සාමාන්‍ය අංශය",
-            chat: "කුඩා AI සංවාදය",
-            counselors: "උපදේශකයෝ",
+            resources: "සම්පත්",
+            chat: "AI සංවාදය",
+            counselors: "උපදේශකයින්",
+            breathing: "හුස්ම ගැනීම",
             settings: "සැකසුම්",
             "register-counselor": "උපදේශක ලෙස ලියාපදිංචි වන්න"
         },
@@ -92,7 +106,11 @@ export const i18n = {
             add_acc: "තවත් ගිණුමක් එක් කරන්න",
             available_immediately: "වහාම හමුවීම් සඳහා ලබා ගත හැකිය",
             register_btn: "උපදේශක ලියාපදිංචි කරන්න",
-            back_to_settings: "← සැකසුම් වලට ආපසු යන්න"
+            back_to_settings: "← සැකසුම් වලට ආපසු යන්න",
+            resources_desc: "ඔබේ වර්ධනය සඳහා දැනුම",
+            chat_desc: "සවන් දීමට සැමවිටම සූදානම්",
+            counselors_desc: "වෘත්තීය මගපෙන්වීම",
+            breathing_desc: "ක්ෂණිකව ආතතිය සමනය කරන්න"
         },
         chat: {
             welcome: "ආයුබෝවන්! මම ඔබේ මනෝ සුවතා සහායකයා. අද ඔබට කොහොමද?",

@@ -62,20 +62,20 @@ const Home = () => {
 
             <div className="grid grid-cols-2" style={{ marginTop: '30px', gap: '20px' }}>
                 <div className="card card-common-section" onClick={() => navigate('resources')} style={{ cursor: 'pointer', minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                    <h3 style={{ margin: 0 }}>Resources</h3>
-                    <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>Knowledge for your growth</p>
+                    <h3 style={{ margin: 0 }}>{dict.titles.resources}</h3>
+                    <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>{dict.ui.resources_desc}</p>
                 </div>
                 <div className="card card-mini-chat" onClick={() => navigate('chat')} style={{ cursor: 'pointer', minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                    <h3 style={{ margin: 0 }}>AI Chat</h3>
-                    <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>Always here to listen</p>
+                    <h3 style={{ margin: 0 }}>{dict.titles.chat}</h3>
+                    <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>{dict.ui.chat_desc}</p>
                 </div>
                 <div className="card card-hire-counselor" onClick={() => navigate('counselors')} style={{ cursor: 'pointer', minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                    <h3 style={{ margin: 0 }}>Counselors</h3>
-                    <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>Professional guidance</p>
+                    <h3 style={{ margin: 0 }}>{dict.titles.counselors}</h3>
+                    <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>{dict.ui.counselors_desc}</p>
                 </div>
                 <div className="card card-live-now" onClick={() => navigate('live-session')} style={{ cursor: 'pointer', minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                    <h3 style={{ margin: 0 }}>Breathing</h3>
-                    <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>Relieve stress instantly</p>
+                    <h3 style={{ margin: 0 }}>{dict.titles.breathing}</h3>
+                    <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>{dict.ui.breathing_desc}</p>
                 </div>
             </div>
 
