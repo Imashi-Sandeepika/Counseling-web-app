@@ -31,6 +31,32 @@ const RegisterCounselor = () => {
         }));
     };
 
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        setLoading(true);
+        const data = new FormData();
+        data.append('file', file);
+
+        try {
+            const res = await fetch('http://127.0.0.1:8000/api/upload', {
+                method: 'POST',
+                body: data
+            });
+            const json = await res.json();
+            if (json.ok) {
+                setFormData(prev => ({ ...prev, profileImage: json.path }));
+            } else {
+                alert("Upload failed: " + (json.error || "Unknown error"));
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Upload error");
+        }
+        setLoading(false);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isUnlocked) {
@@ -189,7 +215,19 @@ const RegisterCounselor = () => {
 
                     <div className="grid two">
                         <label>Languages Spoken<input name="languages" value={formData.languages} onChange={handleChange} placeholder="e.g. English, Sinhala" /></label>
-                        <label>Profile Image URL<input name="profileImage" value={formData.profileImage} onChange={handleChange} placeholder="Link to a professional photo" /></label>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                            <label>Profile Image (Choose from Gallery)</label>
+                            <input type="file" accept="image/*" onChange={handleFileChange} style={{ padding: '10px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', width: '100%' }} />
+                            {formData.profileImage && (
+                                <div style={{ marginTop: '10px' }}>
+                                    <img
+                                        src={formData.profileImage.startsWith('http') || formData.profileImage.startsWith('/') ? formData.profileImage : '/' + formData.profileImage}
+                                        alt="Preview"
+                                        style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '10px', border: '2px solid var(--accent)' }}
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     <button type="submit" className="btn-formal" style={{ width: '100%', marginTop: '30px', padding: '15px' }} disabled={loading || !isUnlocked}>

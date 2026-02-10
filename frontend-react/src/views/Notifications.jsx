@@ -6,7 +6,9 @@ const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const email = store.user.email || store.counselor.email || store.admin.email;
+    const email = (store.admin.authenticated && store.admin.email) ||
+        (store.counselor.authenticated && store.counselor.email) ||
+        store.user.email;
 
     useEffect(() => {
         const fetchNotifications = async () => {
