@@ -9,8 +9,8 @@ export const i18n = {
             breathing: "Breathing",
             alerts: "Alerts",
             "register-counselor": "Register Counselor",
-            notifications: "Alerts",
-            settings: "settings",
+            notifications: "Alert",
+            settings: "Settings",
             signout: "Sign Out"
         },
         titles: {
@@ -75,7 +75,7 @@ export const i18n = {
             breathing: "හුස්ම ගැනීම",
             alerts: "ඇඟවීම්",
             "register-counselor": "උපදේශක ලියාපදිංචිය",
-            notifications: "ඇඟවීම්",
+            notifications: "ඇඟවීම",
             settings: "සැකසුම්",
             signout: "ඉවත්වන්න"
         },

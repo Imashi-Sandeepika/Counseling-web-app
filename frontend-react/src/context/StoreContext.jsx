@@ -1,5 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+const API_BASE =
+    import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+
+
 const StoreContext = createContext();
 
 const CATEGORIES = [
@@ -65,7 +69,8 @@ export const StoreProvider = ({ children }) => {
         if (body) options.body = JSON.stringify(body);
 
         try {
-            const res = await fetch(`http://127.0.0.1:8000${path}`, options);
+            // Use the API_BASE constant defined at the top of the file
+            const res = await fetch(`${API_BASE}${path}`, options);
             let data = null;
             try { data = await res.json() } catch (e) { data = null }
             if (data && typeof data === 'object' && !('ok' in data)) data.ok = res.ok;
