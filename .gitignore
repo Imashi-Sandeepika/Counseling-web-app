@@ -40,7 +40,7 @@ share/python-wheels/
 MANIFEST
 
 # Databases
-*.db
+# *.db
 *.sqlite3
 
 # IDEs/Editors
