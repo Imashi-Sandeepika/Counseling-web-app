@@ -7,7 +7,7 @@ import Resources from './views/Resources';
 import Chat from './views/Chat';
 import Counselors from './views/Counselors';
 import MyBookings from './views/MyBookings';
-import Settings from './views/Settings';
+import Settings from './views/Settings'; 
 import Notifications from './views/Notifications';
 import RegisterCounselor from './views/RegisterCounselor';
 import Feedback from './views/Feedback';
