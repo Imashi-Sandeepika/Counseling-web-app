@@ -15,6 +15,10 @@
   --accent-glow: rgba(50, 222, 132, 0.15);
   --accent-soft: rgba(50, 222, 132, 0.1);
 
+  /* Gold Minimum Accent */
+  --gold: #d4af37;
+  --gold-glow: rgba(212, 175, 55, 0.2);
+
   --overlay-start: rgba(5, 7, 10, 0.6);
   --overlay-end: rgba(5, 7, 10, 0.8);
   --overlay-hover-start: rgba(5, 7, 10, 0.4);
@@ -60,6 +64,9 @@
   --accent-glow: rgba(50, 222, 132, 0.1);
   --accent-soft: rgba(50, 222, 132, 0.15);
   
+  --gold: #b38b22;
+  --gold-glow: rgba(179, 139, 34, 0.15);
+
   --overlay-start: rgba(255, 255, 255, 0.7);
   --overlay-end: rgba(255, 255, 255, 0.9);
   --overlay-hover-start: rgba(255, 255, 255, 0.5);
@@ -258,9 +265,9 @@ nav {
 
 .panel:hover,
 .card:hover {
-  border-color: rgba(50, 222, 132, 0.3);
+  border-color: var(--gold);
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 20px 40px var(--gold-glow);
 }
 
 /* Background Gradients for Cards */
