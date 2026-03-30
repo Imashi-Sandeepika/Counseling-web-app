@@ -120,6 +120,7 @@ class Appointment(db.Model):
     payment_status = db.Column(db.String(16), default="unpaid")
     passcode = db.Column(db.String(32))
     zoom_link = db.Column(db.String(255))
+    receipt_url = db.Column(db.String(255))
 
 class Session(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -520,7 +521,8 @@ def list_appointments():
             "status": a.status,
             "paymentStatus": a.payment_status,
             "passcode": a.passcode,
-            "zoomLink": a.zoom_link
+            "zoomLink": a.zoom_link,
+            "receiptUrl": a.receipt_url
         })
     return jsonify(out)
 
@@ -569,6 +571,8 @@ def update_appointment(aid):
 
     if "paymentStatus" in data:
         a.payment_status = data["paymentStatus"]
+    if "receiptUrl" in data:
+        a.receipt_url = data["receiptUrl"]
     if "passcode" in data:
         a.passcode = data["passcode"]
     if "zoomLink" in data:

@@ -29,6 +29,30 @@ const MyBookings = () => {
         }
     };
 
+    const handleUploadReceipt = async (aptId, file) => {
+        if (!file) return;
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000";
+            const res = await fetch(`${API_BASE}/api/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+            if (data.ok) {
+                await api(`/api/appointments/${aptId}`, 'PUT', { receiptUrl: data.path, paymentStatus: 'uploaded' });
+                setAppointments(prev => prev.map(a => a.id === aptId ? { ...a, receiptUrl: data.path, paymentStatus: 'uploaded' } : a));
+                alert('Receipt uploaded successfully! Awaiting verification.');
+            } else {
+                alert('Upload failed.');
+            }
+        } catch (e) {
+            console.error('Upload error:', e);
+            alert('Error during upload.');
+        }
+    };
+
     const getStatusBadge = (status) => {
         const color = getStatusColor(status);
         return (
@@ -128,9 +152,14 @@ const MyBookings = () => {
                                             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '5px', textTransform: 'uppercase', fontWeight: '600' }}>
                                                 💳 Payment
                                             </div>
-                                            <div style={{ fontSize: '1rem', fontWeight: '600', color: apt.paymentStatus === 'paid' ? 'var(--good)' : 'var(--warning)' }}>
-                                                {apt.paymentStatus === 'paid' ? '✓ Paid' : '⏳ Pending'}
+                                            <div style={{ fontSize: '1rem', fontWeight: '600', color: apt.paymentStatus === 'paid' ? 'var(--good)' : (apt.paymentStatus === 'uploaded' ? 'var(--accent)' : 'var(--warning)') }}>
+                                                {apt.paymentStatus === 'paid' ? '✓ Paid' : (apt.paymentStatus === 'uploaded' ? '⏳ Verifying' : '⏳ Pending')}
                                             </div>
+                                            {apt.receiptUrl && (
+                                                <div style={{ marginTop: '5px' }}>
+                                                    <a href={`http://127.0.0.1:5000/${apt.receiptUrl}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.8rem', color: 'var(--accent)', textDecoration: 'underline' }}>View Receipt</a>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
@@ -172,9 +201,38 @@ const MyBookings = () => {
                                             borderRadius: '8px',
                                             fontSize: '0.8rem',
                                             color: 'var(--good)',
-                                            fontWeight: '600'
+                                            fontWeight: '600',
+                                            marginBottom: '10px'
                                         }}>
                                             ✓ Ready to Join
+                                        </div>
+                                    )}
+
+                                    {apt.status === 'confirmed' && apt.paymentStatus !== 'paid' && (
+                                        <div style={{ marginTop: '10px' }}>
+                                            <input 
+                                                type="file" 
+                                                id={`upload-${apt.id}`}
+                                                accept="image/*"
+                                                onChange={(e) => handleUploadReceipt(apt.id, e.target.files[0])}
+                                                style={{ display: 'none' }}
+                                            />
+                                            <label 
+                                                htmlFor={`upload-${apt.id}`}
+                                                className="btn-formal"
+                                                style={{
+                                                    display: 'inline-block',
+                                                    padding: '8px 15px',
+                                                    fontSize: '0.8rem',
+                                                    background: 'var(--surface)',
+                                                    color: 'var(--text-main)',
+                                                    border: '1px solid var(--border)',
+                                                    cursor: 'pointer',
+                                                    borderRadius: '6px'
+                                                }}
+                                            >
+                                                + Add Receipt
+                                            </label>
                                         </div>
                                     )}
                                 </div>

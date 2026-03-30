@@ -29,6 +29,41 @@ const AdminAppointments = () => {
         }
     };
 
+    const updatePaymentStatus = async (appointmentId, newPaymentStatus) => {
+        const result = await api(`/api/appointments/${appointmentId}`, 'PUT', {
+            paymentStatus: newPaymentStatus
+        });
+        if (result.ok) {
+            setAppointments(prev => prev.map(apt =>
+                apt.id === appointmentId ? { ...apt, paymentStatus: newPaymentStatus } : apt
+            ));
+        }
+    };
+
+    const handleUploadReceipt = async (aptId, file) => {
+        if (!file) return;
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:5000";
+            const res = await fetch(`${API_BASE}/api/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+            if (data.ok) {
+                await api(`/api/appointments/${aptId}`, 'PUT', { receiptUrl: data.path, paymentStatus: 'uploaded' });
+                setAppointments(prev => prev.map(a => a.id === aptId ? { ...a, receiptUrl: data.path, paymentStatus: 'uploaded' } : a));
+                alert('Receipt uploaded successfully!');
+            } else {
+                alert('Upload failed.');
+            }
+        } catch (e) {
+            console.error('Upload error:', e);
+            alert('Error during upload.');
+        }
+    };
+
     const getStatusColor = (status) => {
         switch (status) {
             case 'confirmed': return 'var(--good)';
@@ -146,6 +181,18 @@ const AdminAppointments = () => {
                                     <div>{apt.date} @ {apt.time}</div>
                                 </div>
 
+                                <div>
+                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '5px' }}>PAYMENT</div>
+                                    <div style={{ fontWeight: '500', color: apt.paymentStatus === 'paid' ? 'var(--good)' : (apt.paymentStatus === 'uploaded' ? 'var(--accent)' : 'var(--warning)') }}>
+                                        {apt.paymentStatus === 'paid' ? 'Paid' : (apt.paymentStatus === 'uploaded' ? 'Receipt Uploaded' : 'Unpaid/Pending')}
+                                    </div>
+                                    {apt.receiptUrl && (
+                                        <div style={{ marginTop: '5px' }}>
+                                            <a href={`http://127.0.0.1:5000/${apt.receiptUrl}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.8rem', color: 'var(--accent)', textDecoration: 'underline' }}>View Receipt</a>
+                                        </div>
+                                    )}
+                                </div>
+
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
                                     <span style={{
                                         color: getStatusColor(apt.status),
@@ -182,6 +229,15 @@ const AdminAppointments = () => {
                                                 style={{ padding: '5px 10px', background: 'var(--accent)', border: 'none', borderRadius: '5px', cursor: 'pointer', color: '#fff' }}
                                             >
                                                 ✓ Complete
+                                            </button>
+                                        )}
+                                        {apt.paymentStatus === 'uploaded' && (
+                                            <button
+                                                onClick={() => updatePaymentStatus(apt.id, 'paid')}
+                                                title="Approve Payment"
+                                                style={{ padding: '5px 10px', background: 'var(--good)', border: 'none', borderRadius: '5px', cursor: 'pointer', color: '#fff' }}
+                                            >
+                                                💳 Approve Payment
                                             </button>
                                         )}
                                     </div>

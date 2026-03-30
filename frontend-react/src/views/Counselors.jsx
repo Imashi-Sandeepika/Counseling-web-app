@@ -3,7 +3,7 @@ import { useStore } from '../context/StoreContext';
 import Booking from '../components/Booking';
 
 const Counselors = () => {
-    const { api, store, addActivity } = useStore();
+    const { api, store, addActivity, navigate } = useStore();
     const [counselors, setCounselors] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedCounselor, setSelectedCounselor] = useState(null);
@@ -35,14 +35,14 @@ const Counselors = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                background: "linear-gradient(rgba(5, 7, 10, 0.7), rgba(5, 7, 10, 0.7)), url('/images/therapy.jpg')",
+                background: "linear-gradient(var(--overlay-start), var(--overlay-end)), url('/images/therapy.jpg')",
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 border: 'none'
             }}>
                 <h3 className="hero-text" style={{ fontSize: '2.5rem', marginBottom: '10px' }}>Professional Guidance</h3>
 
-                <p style={{ color: 'rgba(255,255,255,0.8)', maxWidth: '600px' }}>Join live sessions with the counselor, utilizing tools such as Google Meet or Zoom. Equivalent to physical counseling, conducted entirely online.</p>
+                <p style={{ color: 'var(--text-main)', maxWidth: '600px' }}>Join live sessions with the counselor, utilizing tools such as Google Meet or Zoom. Equivalent to physical counseling, conducted entirely online.</p>
                 <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <span className="badge" style={{ background: 'rgba(50, 222, 132, 0.2)', color: 'var(--good)' }}>Verfied Counselors</span>
                 </div>
@@ -137,80 +137,37 @@ const Counselors = () => {
                         </button>
                     </div>
 
-                    {/* Integrated Payment Gateway Mockup (No Pictures) */}
+                    {/* Integrated Payment Gateway Mockup Removed - Replaced with Bank details */}
                     <div style={{
-                        background: '#fff',
+                        background: 'var(--surface)',
                         padding: '40px',
                         borderRadius: '24px',
-                        border: '1px solid #ddd',
-                        boxShadow: '0 25px 60px rgba(0,0,0,0.15)',
+                        border: '1px solid var(--border)',
+                        boxShadow: 'var(--shadow-sm)',
                         maxWidth: '600px',
                         margin: '0 auto',
-                        color: '#333'
                     }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '35px' }}>
-                            <div style={{ fontWeight: '900', color: '#1a1a1b', fontSize: '1.6rem', letterSpacing: '-0.5px' }}>
-                                Enter Your Details
-                            </div>
-                            <div style={{ display: 'flex', gap: '10px' }}>
-                                <div style={{ width: '45px', height: '28px', background: '#f8f9fa', borderRadius: '6px', border: '1px solid #eee' }}></div>
-                                <div style={{ width: '45px', height: '28px', background: '#f8f9fa', borderRadius: '6px', border: '1px solid #eee' }}></div>
-                                <div style={{ width: '45px', height: '28px', background: '#f8f9fa', borderRadius: '6px', border: '1px solid #eee' }}></div>
-                            </div>
+                        <div style={{ fontWeight: '900', fontSize: '1.4rem', marginBottom: '15px' }}>
+                            Manual Bank Transfer Instructions
                         </div>
-
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
-                            <div style={{ textAlign: 'left' }}>
-                                <label style={{ fontSize: '0.75rem', fontWeight: '800', color: '#888', marginBottom: '10px', display: 'block', textTransform: 'uppercase' }}>Cardholder Name</label>
-                                <input type="text" placeholder="Full Name (e.g. John Doe)" disabled style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1px solid #e0e0e0', background: '#fcfcfc', color: '#222', fontSize: '1rem' }} />
-                            </div>
-
-                            <div style={{ textAlign: 'left', position: 'relative' }}>
-                                <label style={{ fontSize: '0.75rem', fontWeight: '800', color: '#888', marginBottom: '10px', display: 'block', textTransform: 'uppercase' }}>Card Number</label>
-                                <input type="text" placeholder="0000 0000 0000 0000" disabled style={{
-                                    width: '100%',
-                                    padding: '16px',
-                                    borderRadius: '12px',
-                                    border: '1px solid #e0e0e0',
-                                    background: '#fcfcfc',
-                                    color: '#222',
-                                    fontSize: '1.1rem',
-                                    letterSpacing: '2px'
-                                }} />
-                                <span style={{ position: 'absolute', right: '18px', bottom: '16px', fontSize: '1.4rem' }}>💳</span>
-                            </div>
-
-                            <div style={{ display: 'flex', gap: '25px' }}>
-                                <div style={{ flex: 1, textAlign: 'left' }}>
-                                    <label style={{ fontSize: '0.75rem', fontWeight: '800', color: '#888', marginBottom: '10px', display: 'block', textTransform: 'uppercase' }}>Expiry</label>
-                                    <input type="text" placeholder="MM/YY" disabled style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1px solid #e0e0e0', background: '#fcfcfc', color: '#222' }} />
-                                </div>
-                                <div style={{ flex: 1, textAlign: 'left' }}>
-                                    <label style={{ fontSize: '0.75rem', fontWeight: '800', color: '#888', marginBottom: '10px', display: 'block', textTransform: 'uppercase' }}>CVC</label>
-                                    <input type="text" placeholder="***" disabled style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1px solid #e0e0e0', background: '#fcfcfc', color: '#222' }} />
-                                </div>
-                            </div>
-                        </div>
-
-                        <button className="btn-formal" style={{
-                            width: '100%',
-                            marginTop: '40px',
-                            background: '#1a1a1b',
-                            color: '#fff',
-                            padding: '20px',
-                            fontWeight: '800',
-                            borderRadius: '14px',
-                            fontSize: '1.1rem',
-                            cursor: 'not-allowed',
-                            border: 'none',
-                            boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
-                        }} disabled>
-                            Confirm & Pay Securely
+                        <p style={{ color: 'var(--text-muted)', marginBottom: '20px' }}>
+                            Please transfer your session fee to the following account. Once your appointment request is confirmed, you can upload the payment receipt on the <strong>My Bookings</strong> page.
+                        </p>
+                        <ul className="links" style={{ padding: 0, color: 'var(--text-main)', marginBottom: '30px' }}>
+                            <li style={{ marginBottom: '10px' }}><strong>Bank:</strong> Commercial Bank</li>
+                            <li style={{ marginBottom: '10px' }}><strong>Branch:</strong> Malabe</li>
+                            <li style={{ marginBottom: '10px' }}><strong>Account Name:</strong> PsyCare Institute</li>
+                            <li style={{ marginBottom: '10px' }}><strong>Account No:</strong> 1234567890</li>
+                        </ul>
+                        <button 
+                            className="btn-formal" 
+                            style={{ width: '100%', padding: '15px', background: 'var(--accent)' }}
+                            onClick={() => {
+                                navigate('my-bookings');
+                            }}
+                        >
+                            Upload Receipt in My Bookings
                         </button>
-
-                        <div style={{ marginTop: '25px', textAlign: 'center', color: '#aaa', fontSize: '0.8rem', fontWeight: '600', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
-                            🔒 Bank-Grade Security • Informational Demo Mode
-                        </div>
                     </div>
                 </div>
             </div>

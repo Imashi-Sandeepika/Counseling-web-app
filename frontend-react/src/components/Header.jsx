@@ -34,10 +34,11 @@ const Header = () => {
         ];
     } else {
         navItems = [
+            { id: 'home', label: dict.nav.home, icon: '🏠' },
             { id: 'resources', label: dict.nav.resources, icon: '📚' },
             { id: 'chat', label: dict.nav.chat, icon: '🤖' },
             { id: 'counselors', label: dict.nav.counselors, icon: '👨‍⚕️' },
-            { id: 'notifications', label: 'Alert', icon: '🔔' },
+            { id: 'notifications', label: 'Alerts', icon: '🔔' },
             { id: 'settings', label: dict.nav.settings, icon: '⚙️' }
         ];
     }

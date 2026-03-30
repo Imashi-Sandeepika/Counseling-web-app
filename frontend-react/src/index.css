@@ -15,9 +15,24 @@
   --accent-glow: rgba(50, 222, 132, 0.15);
   --accent-soft: rgba(50, 222, 132, 0.1);
 
+  --overlay-start: rgba(5, 7, 10, 0.6);
+  --overlay-end: rgba(5, 7, 10, 0.8);
+  --overlay-hover-start: rgba(5, 7, 10, 0.4);
+  --overlay-hover-end: rgba(5, 7, 10, 0.6);
+
+  --nav-glass: rgba(13, 17, 23, 0.85);
+  --nav-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  --nav-hover: rgba(255, 255, 255, 0.05);
+
   --good: #32de84;
   --bad: #ff4d4d;
   --warning: #ffcc00;
+
+  --hero-start: #ffffff;
+  --hero-end: #888888;
+  --glass-card-bg: rgba(255, 255, 255, 0.03);
+  --glass-card-border: rgba(255, 255, 255, 0.05);
+  --link-hover-color: #ffffff;
 
   --border: rgba(255, 255, 255, 0.1);
   --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
@@ -43,7 +58,22 @@
   --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
   --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.04);
   --accent-glow: rgba(50, 222, 132, 0.1);
-  --accent-soft: rgba(50, 222, 132, 0.06);
+  --accent-soft: rgba(50, 222, 132, 0.15);
+  
+  --overlay-start: rgba(255, 255, 255, 0.7);
+  --overlay-end: rgba(255, 255, 255, 0.9);
+  --overlay-hover-start: rgba(255, 255, 255, 0.5);
+  --overlay-hover-end: rgba(255, 255, 255, 0.8);
+  
+  --nav-glass: rgba(255, 255, 255, 0.85);
+  --nav-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  --nav-hover: rgba(15, 23, 42, 0.05);
+
+  --hero-start: #0f172a;
+  --hero-end: #475569;
+  --glass-card-bg: rgba(0, 0, 0, 0.03);
+  --glass-card-border: rgba(0, 0, 0, 0.05);
+  --link-hover-color: #000000;
 }
 
 [data-theme="light"] body {
@@ -153,17 +183,17 @@ header {
   transform: translateX(-50%);
   width: auto;
   max-width: 95%;
-  background: rgba(13, 17, 23, 0.85);
+  background: var(--nav-glass);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
   border-radius: 99px;
   padding: 6px 12px;
   z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: var(--nav-shadow);
   transition: var(--transition);
 }
 
@@ -205,13 +235,13 @@ nav {
 }
 
 .nav-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--nav-hover);
 }
 
 .nav-btn.active {
   background: var(--accent) !important;
   color: #000 !important;
-  box-shadow: 0 4px 15px rgba(50, 222, 132, 0.4);
+  box-shadow: 0 4px 15px var(--accent-glow);
 }
 
 /* Glass Panels & Cards */
@@ -235,49 +265,49 @@ nav {
 
 /* Background Gradients for Cards */
 .card-common-section {
-  background: linear-gradient(135deg, rgba(5, 7, 10, 0.4) 0%, rgba(5, 7, 10, 0.6) 100%), url('/images/home_resources_v2.png');
+  background: linear-gradient(135deg, var(--overlay-start) 0%, var(--overlay-end) 100%), url('/images/home_resources_v2.png');
   background-size: cover;
   background-position: center;
 }
 
 .card-common-section:hover {
-  background: linear-gradient(135deg, rgba(5, 7, 10, 0.2) 0%, rgba(5, 7, 10, 0.4) 100%), url('/images/home_resources_v2.png');
+  background: linear-gradient(135deg, var(--overlay-hover-start) 0%, var(--overlay-hover-end) 100%), url('/images/home_resources_v2.png');
   background-size: cover;
   background-position: center;
 }
 
 .card-mini-chat {
-  background: linear-gradient(135deg, rgba(5, 7, 10, 0.4) 0%, rgba(5, 7, 10, 0.6) 100%), url('/images/home_chat_v2.png');
+  background: linear-gradient(135deg, var(--overlay-start) 0%, var(--overlay-end) 100%), url('/images/home_chat_v2.png');
   background-size: cover;
   background-position: center;
 }
 
 .card-mini-chat:hover {
-  background: linear-gradient(135deg, rgba(5, 7, 10, 0.2) 0%, rgba(5, 7, 10, 0.4) 100%), url('/images/home_chat_v2.png');
+  background: linear-gradient(135deg, var(--overlay-hover-start) 0%, var(--overlay-hover-end) 100%), url('/images/home_chat_v2.png');
   background-size: cover;
   background-position: center;
 }
 
 .card-hire-counselor {
-  background: linear-gradient(135deg, rgba(5, 7, 10, 0.4) 0%, rgba(5, 7, 10, 0.6) 100%), url('/images/home_counselors.png');
+  background: linear-gradient(135deg, var(--overlay-start) 0%, var(--overlay-end) 100%), url('/images/home_counselors.png');
   background-size: 100% 100%;
   background-position: center;
 }
 
 .card-hire-counselor:hover {
-  background: linear-gradient(135deg, rgba(5, 7, 10, 0.2) 0%, rgba(5, 7, 10, 0.4) 100%), url('/images/home_counselors.png');
+  background: linear-gradient(135deg, var(--overlay-hover-start) 0%, var(--overlay-hover-end) 100%), url('/images/home_counselors.png');
   background-size: 100% 100%;
   background-position: center;
 }
 
 .card-live-now {
-  background: linear-gradient(135deg, rgba(5, 7, 10, 0.4) 0%, rgba(5, 7, 10, 0.6) 100%), url('/images/home_breathing.png');
+  background: linear-gradient(135deg, var(--overlay-start) 0%, var(--overlay-end) 100%), url('/images/home_breathing.png');
   background-size: cover;
   background-position: center;
 }
 
 .card-live-now:hover {
-  background: linear-gradient(135deg, rgba(5, 7, 10, 0.2) 0%, rgba(5, 7, 10, 0.4) 100%), url('/images/home_breathing.png');
+  background: linear-gradient(135deg, var(--overlay-hover-start) 0%, var(--overlay-hover-end) 100%), url('/images/home_breathing.png');
   background-size: cover;
   background-position: center;
 }
@@ -295,7 +325,7 @@ input,
 select,
 textarea {
   margin-top: 0.5rem;
-  background: #0d1117;
+  background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text-main);
   border-radius: var(--radius-md);
@@ -471,7 +501,7 @@ button {
 .hero-text {
   font-size: 4rem;
   line-height: 1.1;
-  background: linear-gradient(to right, #ffffff, #888888);
+  background: linear-gradient(to right, var(--hero-start), var(--hero-end));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -479,9 +509,9 @@ button {
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--glass-card-bg);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-card-border);
 }
 
 /* Link Visibility Fixes */
@@ -496,7 +526,7 @@ button {
 }
 
 .links a:hover {
-  color: #fff;
+  color: var(--link-hover-color);
   border-bottom-color: var(--accent);
   transform: translateX(5px);
 }
