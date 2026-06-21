@@ -30,6 +30,7 @@ const Header = () => {
             { id: 'counselor-schedule', label: 'Schedule', icon: '🗓️' },
             { id: 'counselor-clients', label: 'Clients', icon: '👥' },
             { id: 'counselor-earnings', label: 'Earnings', icon: '💰' },
+            { id: 'counselor-settings', label: 'Settings', icon: '⚙️' },
             { id: 'notifications', label: 'Alerts', icon: '🔔' }
         ];
     } else {

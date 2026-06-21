@@ -1320,17 +1320,6 @@ def seed():
         admin = Admin(name="Administrator", email="admin@example.com", password_hash=generate_password_hash("admin123"))
         db.session.add(admin)
     
-    # Add Mock Notifications for Testing
-    if Notification.query.count() == 0:
-        # Client Notifications
-        db.session.add(Notification(user_email="demo@example.com", title="Appointment Confirmed", status="success", msg="Your session with Dr. Jane Smith has been scheduled. We look forward to supporting you.", related_person="Dr. Jane Smith"))
-        db.session.add(Notification(user_email="demo@example.com", title="New Message", status="info", msg="Dr. Jane Smith has sent you a message in your private chat.", related_person="Dr. Jane Smith"))
-        
-        # Counselor Notifications
-        db.session.add(Notification(user_email="bandara@example.com", title="New Booking Request", status="info", msg="A new client, demo@example.com, has requested a session.", related_person="demo@example.com"))
-        
-        # Admin Notifications
-        db.session.add(Notification(user_email="admin@example.com", title="Provider Onboarding", status="success", msg="Counselor Mark Evans has completed the verification process and is now active.", related_person="Mark Evans"))
 
     db.session.commit()
 

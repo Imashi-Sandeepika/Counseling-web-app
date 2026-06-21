@@ -79,33 +79,7 @@ const AdminReports = () => {
                     </div>
                 </div>
 
-                {/* Sentiment Analysis */}
-                <div className="panel" style={{ padding: '30px' }}>
-                    <h3 style={{ marginBottom: '25px', fontSize: '1.2rem' }}>User Sentiment (Feedback)</h3>
-                    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'flex-end', height: '150px', paddingBottom: '20px' }}>
-                        {['positive', 'neutral', 'negative'].map((s) => {
-                            const count = stats?.sentiment?.[s] || 0;
-                            const total = Object.values(stats?.sentiment || {}).reduce((a, b) => a + b, 0) || 1;
-                            const height = Math.max((count / total) * 100, 5);
-                            const icons = { positive: '😊', neutral: '😐', negative: '😔' };
-                            const colors = { positive: 'var(--good)', neutral: 'var(--warning)', negative: 'var(--bad)' };
-
-                            return (
-                                <div key={s} style={{ textAlign: 'center', width: '60px' }}>
-                                    <div style={{ marginBottom: '10px', fontSize: '0.8rem', fontWeight: 'bold' }}>{count}</div>
-                                    <div style={{
-                                        height: `${height}px`,
-                                        background: colors[s],
-                                        borderRadius: '8px 8px 0 0',
-                                        transition: 'height 1s ease-out'
-                                    }} />
-                                    <div style={{ marginTop: '10px', fontSize: '1.5rem' }}>{icons[s]}</div>
-                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>{s}</div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
+                
             </div>
         </section>
     );

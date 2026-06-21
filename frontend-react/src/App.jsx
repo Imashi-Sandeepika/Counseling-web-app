@@ -7,7 +7,8 @@ import Resources from './views/Resources';
 import Chat from './views/Chat';
 import Counselors from './views/Counselors';
 import MyBookings from './views/MyBookings';
-import Settings from './views/Settings'; 
+import Settings from './views/Settings';
+import CounselorSettings from './views/CounselorSettings'; 
 import Notifications from './views/Notifications';
 import RegisterCounselor from './views/RegisterCounselor';
 import Feedback from './views/Feedback';
@@ -40,6 +41,7 @@ const App = () => {
       case 'landing-login': return <LandingLogin />;
       case 'home': return <Home />;
       case 'notifications': return <Notifications />;
+      case 'counselor-settings': return <CounselorSettings />;
       case 'resources': return <Resources />;
       case 'chat': return <Chat />;
       case 'counselors': return <Counselors />;
@@ -56,6 +58,7 @@ const App = () => {
       case 'counselor-schedule': return <CounselorSchedule />;
       case 'counselor-clients': return <CounselorClients />;
       case 'counselor-earnings': return <CounselorEarnings />;
+
 
       // Admin Routes
       case 'admin-users': return <AdminUsers />;
