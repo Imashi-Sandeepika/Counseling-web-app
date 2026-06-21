@@ -15,14 +15,16 @@ This file shows the current registrations on the Counseling platform. Run the sc
 |    7 | Imashi             | imashi123@gmail.com            | 2026-02-16 16:09:39.910797 | 2026-02-16 16:09:45.287872 |
 |    8 | Vithukshiha        | vithukshiha@gmail.com          | 2026-06-21 05:33:18.051826 | 2026-06-21 06:11:17.749272 |
 |    9 | Test User          | testuser@example.com           | 2026-06-21 05:36:50.190509 | 2026-06-21 05:37:16.621512 |
+|   10 | Test Client        | client@example.com             | 2026-06-21 06:36:20.094319 |                            |
 
 ## 👨‍⚕️ Registered Counselors
 
-|   id | name               | email                     | specialty   |   experience | languages             | country   | created_at                 |
-|-----:|:-------------------|:--------------------------|:------------|-------------:|:----------------------|:----------|:---------------------------|
-|    1 | P.K.I.S. Bandara   | bandara@example.com       |             |          nan | Sinhala, English      | Sri Lanka | 2026-02-05 16:42:10.479382 |
-|    3 | W.A.M. Waduwaththa | imashibandara19@gmail.com |             |            0 | English,Tamil,Sinhala | Sri Lanka | 2026-02-05 19:11:39.125027 |
-|    4 | Rose Violet        | rose@gmail.com            |             |            0 | English , Spanish ,   | America   | 2026-02-16 16:00:18.432164 |
+|   id | name               | email                     | specialty            |   experience | languages             | country   | created_at                 |
+|-----:|:-------------------|:--------------------------|:---------------------|-------------:|:----------------------|:----------|:---------------------------|
+|    1 | P.K.I.S. Bandara   | bandara@example.com       |                      |          nan | Sinhala, English      | Sri Lanka | 2026-02-05 16:42:10.479382 |
+|    3 | W.A.M. Waduwaththa | imashibandara19@gmail.com |                      |            0 | English,Tamil,Sinhala | Sri Lanka | 2026-02-05 19:11:39.125027 |
+|    4 | Rose Violet        | rose@gmail.com            |                      |            0 | English , Spanish ,   | America   | 2026-02-16 16:00:18.432164 |
+|    5 | Test Counselor     | counselor@example.com     | Anxiety & Depression |            5 | English, Sinhala      | Sri Lanka | 2026-06-21 06:36:20.083733 |
 
 ## 👑 Registered Administrators
 
