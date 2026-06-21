@@ -12,7 +12,7 @@ const Counselors = () => {
         const fetchCounselors = async () => {
             const res = await api('/api/counselors');
             if (Array.isArray(res)) {
-                setCounselors(res.filter(c => !(c.name === 'Krishani' && !c.profileImage)));
+                setCounselors(res.filter(c => c.name !== 'Krishani'));
             }
             setLoading(false);
         };
