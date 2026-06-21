@@ -18,11 +18,12 @@ const CounselorAppointments = () => {
     }, [store.counselor.id]);
 
     const updateStatus = async (appointmentId, newStatus) => {
-        const result = await api('/api/appointments/update-status', 'POST', {
-            appointmentId,
+        const result = await api(`/api/appointments/${appointmentId}`, 'PUT', {
             status: newStatus
         });
         if (result.ok) {
+            // Notify counselor that client will receive an alert via backend notification system
+            window.alert(`Appointment has been ${newStatus}. The client will receive a notification.`);
             setAppointments(prev => prev.map(apt =>
                 apt.id === appointmentId ? { ...apt, status: newStatus } : apt
             ));

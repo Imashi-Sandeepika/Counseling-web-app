@@ -12,7 +12,7 @@ const Counselors = () => {
         const fetchCounselors = async () => {
             const res = await api('/api/counselors');
             if (Array.isArray(res)) {
-                setCounselors(res.filter(c => c.name !== 'Krishani'));
+                setCounselors(res.filter(c => !(c.name === 'Krishani' && !c.profileImage)));
             }
             setLoading(false);
         };
@@ -85,6 +85,13 @@ const Counselors = () => {
                                                 <span>{c.flag}</span>
                                             )}
                                         </div>
+                                        {c.languages && (
+                                            <div style={{ marginTop: '4px', display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                                                {c.languages.split(',').map((lang, idx) => (
+                                                    <span key={idx} className="badge" style={{ background: 'rgba(50, 122, 222, 0.2)', color: 'var(--accent)', fontSize: '0.6rem' }}>{lang.trim()}</span>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 

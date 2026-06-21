@@ -7,6 +7,43 @@ const CounselorSchedule = () => {
     const [available, setAvailable] = useState(false);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [appointments, setAppointments] = useState([]);
+
+    // Fetch confirmed appointments for counselor
+    useEffect(() => {
+        if (!store.counselor.id) return;
+        const fetchAppointments = async () => {
+            const data = await api(`/api/appointments?cid=${store.counselor.id}`);
+            if (Array.isArray(data)) {
+                const confirmed = data.filter(a => a.status === 'confirmed');
+                setAppointments(confirmed);
+            }
+        };
+        fetchAppointments();
+    }, [store.counselor.id, api]);
+
+    // ... existing code continues ...
+    // Insert To-Do list UI after the schedule panels
+    const renderTodoList = () => (
+        <div className="panel" style={{ padding: '30px' }}>
+            <h3 style={{ marginBottom: '25px', fontSize: '1.5rem' }}>My Schedule (To‑Do)</h3>
+            {appointments.length === 0 ? (
+                <p style={{ color: 'var(--text-muted)' }}>No upcoming sessions.</p>
+            ) : (
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                    {appointments.map(a => (
+                        <li key={a.id} style={{ marginBottom: '12px', padding: '10px', background: 'var(--surface-hover)', borderRadius: '8px' }}>
+                            <div style={{ fontWeight: '600' }}>{a.date} – {a.time}</div>
+                            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Client: {a.userEmail || a.email}</div>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+
+    // In return JSX, after the existing left/right panels, include the To‑Do list
+    // We'll replace the closing tags accordingly.
 
     const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -149,7 +186,8 @@ const CounselorSchedule = () => {
                     </p>
                 </div>
             </div>
-        </section>
+                {renderTodoList()}
+                </section>
     );
 };
 
