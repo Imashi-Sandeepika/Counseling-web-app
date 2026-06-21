@@ -11,7 +11,9 @@ const Counselors = () => {
     useEffect(() => {
         const fetchCounselors = async () => {
             const res = await api('/api/counselors');
-            if (Array.isArray(res)) setCounselors(res);
+            if (Array.isArray(res)) {
+                setCounselors(res.filter(c => !(c.name === 'Krishani' && !c.profileImage)));
+            }
             setLoading(false);
         };
         fetchCounselors();
@@ -53,17 +55,30 @@ const Counselors = () => {
                 {loading ? <p style={{ color: 'var(--text-muted)' }}>Loading counselors...</p> : (
                     <div className="grid grid-cols-2">
                         {counselors.map((c, i) => (
-                            <div key={i} className="card" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            <div key={i} className="card" style={{ display: 'flex', flexDirection: 'column', gap: '20px', opacity: c.available ? 1 : 0.7 }}>
                                 <div className="person-card">
-                                    <img
-                                        src={c.profileImage ? (c.profileImage.startsWith('/') ? c.profileImage : '/' + c.profileImage) : '/images/Counselor.jpg'}
-                                        alt={c.name}
-                                        className="avatar"
-                                    />
+                                    <div style={{ position: 'relative' }}>
+                                        <img
+                                            src={c.profileImage ? (c.profileImage.startsWith('/') ? c.profileImage : '/' + c.profileImage) : '/images/Counselor.jpg'}
+                                            alt={c.name}
+                                            className="avatar"
+                                            style={{ borderColor: c.available ? 'var(--accent)' : 'red' }}
+                                        />
+                                        <div style={{
+                                            position: 'absolute',
+                                            bottom: '2px',
+                                            right: '2px',
+                                            width: '14px',
+                                            height: '14px',
+                                            borderRadius: '50%',
+                                            background: c.available ? 'var(--accent)' : 'red',
+                                            border: '2px solid var(--surface)'
+                                        }}></div>
+                                    </div>
                                     <div style={{ flex: 1 }}>
                                         <h4 style={{ margin: 0, fontSize: '1.2rem' }}>{c.name}</h4>
                                         <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '4px' }}>{c.details?.education || c.education || 'Counselor'}</div>
-                                        <div className="badge badge-success" style={{ fontSize: '0.65rem', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                        <div className={`badge ${c.available ? 'badge-success' : ''}`} style={{ fontSize: '0.65rem', display: 'flex', alignItems: 'center', gap: '5px', background: c.available ? '' : 'rgba(139, 148, 158, 0.2)', color: c.available ? '' : 'var(--text-muted)' }}>
                                             {c.country}
                                             {c.flag && (c.flag.includes('/') ?
                                                 <img src={'/' + c.flag.replace(/^picures\//, 'images/')} alt="" style={{ height: '12px', width: 'auto', borderRadius: '2px' }} /> :
@@ -77,32 +92,41 @@ const Counselors = () => {
                                     <div style={{ marginBottom: '12px' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
                                             <span>Empathy</span>
-                                            <span style={{ color: 'var(--good)' }}>{Math.round((c.ratings?.empathy || 4) * 20)}%</span>
+                                            <span style={{ color: c.available ? 'var(--good)' : 'var(--text-muted)' }}>{Math.round((c.ratings?.empathy || 4) * 20)}%</span>
                                         </div>
                                         <div className="bar">
-                                            <span style={{ width: `${(c.ratings?.empathy || 4) * 20}%` }}></span>
+                                            <span style={{ width: `${(c.ratings?.empathy || 4) * 20}%`, background: c.available ? '' : 'var(--text-muted)' }}></span>
                                         </div>
                                     </div>
                                     <div>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
                                             <span>Clarity & Impact</span>
-                                            <span style={{ color: 'var(--accent)' }}>{Math.round((c.ratings?.clarity || 4) * 20)}%</span>
+                                            <span style={{ color: c.available ? 'var(--accent)' : 'var(--text-muted)' }}>{Math.round((c.ratings?.clarity || 4) * 20)}%</span>
                                         </div>
                                         <div className="bar">
-                                            <span style={{ width: `${(c.ratings?.clarity || 4) * 20}%`, background: 'var(--accent)' }}></span>
+                                            <span style={{ width: `${(c.ratings?.clarity || 4) * 20}%`, background: c.available ? 'var(--accent)' : 'var(--text-muted)' }}></span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <button
                                     className="btn-formal"
-                                    style={{ width: '100%' }}
+                                    style={{ 
+                                        width: '100%', 
+                                        background: c.available ? 'var(--accent)' : 'var(--surface-hover)', 
+                                        color: c.available ? '#000' : 'var(--text-muted)',
+                                        cursor: c.available ? 'pointer' : 'not-allowed',
+                                        boxShadow: c.available ? '' : 'none'
+                                    }}
+                                    disabled={!c.available}
                                     onClick={() => {
-                                        setSelectedCounselor(c);
-                                        addActivity('booking_start', c.name);
+                                        if (c.available) {
+                                            setSelectedCounselor(c);
+                                            addActivity('booking_start', c.name);
+                                        }
                                     }}
                                 >
-                                    Book Session
+                                    {c.available ? 'Book Session' : 'Unavailable'}
                                 </button>
                             </div>
                         ))}
