@@ -235,18 +235,18 @@ const Chat = () => {
                                 }, 50);
                             }}
                             style={{
-                                background: 'var(--overlay-start, rgba(255,255,255,0.05))',
+                                background: 'var(--surface, rgba(255,255,255,0.05))',
                                 border: '1px solid var(--border)',
                                 borderRadius: '16px',
                                 padding: '6px 12px',
                                 fontSize: '0.8rem',
-                                color: 'var(--text, #fff)',
+                                color: 'var(--text-main, #fff)',
                                 cursor: 'pointer',
                                 transition: 'all 0.2s',
                                 outline: 'none'
                             }}
-                            onMouseOver={(e) => { e.target.style.background = 'rgba(255,255,255,0.15)'; e.target.style.transform = 'translateY(-1px)'; }}
-                            onMouseOut={(e) => { e.target.style.background = 'var(--overlay-start, rgba(255,255,255,0.05))'; e.target.style.transform = 'translateY(0)'; }}
+                            onMouseOver={(e) => { e.target.style.background = 'var(--surface-hover, rgba(255,255,255,0.15))'; e.target.style.transform = 'translateY(-1px)'; }}
+                            onMouseOut={(e) => { e.target.style.background = 'var(--surface, rgba(255,255,255,0.05))'; e.target.style.transform = 'translateY(0)'; }}
                         >
                             {chip.label}
                         </button>
