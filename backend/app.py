@@ -205,16 +205,18 @@ class AdminToken(db.Model):
 
 @app.route("/")
 def index():
-    # Try to serve the React index.html if it exists, otherwise fallback to old frontend
-    react_index = os.path.join(PROJECT_ROOT, "frontend-react", "index.html")
-    if os.path.exists(react_index):
-        resp = send_file(react_index)
-    else:
-        resp = send_file(os.path.join(PROJECT_ROOT, "frontend", "index.html"))
-    resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
-    resp.headers["Pragma"] = "no-cache"
-    resp.headers["Expires"] = "0"
-    return resp
+    html_content = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>backend</title>
+    </head>
+    <body>
+        <h1>successfully loaded</h1>
+    </body>
+    </html>
+    """
+    return html_content
 
 @app.route("/api/health")
 def health():
