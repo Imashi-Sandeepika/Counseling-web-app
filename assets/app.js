@@ -281,6 +281,15 @@ function navigate(view) {
   document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
   targetView.classList.add("active");
 
+  const header = document.querySelector("header");
+  if (header) {
+    if (loginViews.has(view)) {
+      header.style.display = 'none';
+    } else {
+      header.style.display = 'flex';
+    }
+  }
+
   const btn = document.querySelector(`.nav-btn[data-view="${view}"]`);
   if (btn) btn.classList.add("active");
 
@@ -1035,9 +1044,44 @@ function bind() {
     { id: "admin-login-form", fn: onAdminLogin },
     { id: "admin-register-form", fn: onAdminRegister },
     { id: "join-session-form", fn: onJoinSession },
-    { id: "feedback-form", fn: onFeedbackSubmit }
+    { id: "feedback-form", fn: onFeedbackSubmit },
+    { id: "unified-login-form", fn: async (e) => {
+        e.preventDefault();
+        const role = document.getElementById('login-role').value;
+        if (role === 'client') return onClientLogin(e);
+        if (role === 'counselor') return onCounselorLogin(e);
+        if (role === 'admin') return onAdminLogin(e);
+      } 
+    }
   ];
   forms.forEach(f => { const el = document.getElementById(f.id); if (el) el.addEventListener("submit", f.fn) });
+  
+  // Unified login tabs
+  const unifiedRoleBtns = document.querySelectorAll('.role-btn');
+  if (unifiedRoleBtns.length > 0) {
+    const regLink = document.getElementById('unified-register-link');
+    regLink.onclick = (e) => { e.preventDefault(); navigate('client-register'); };
+    
+    unifiedRoleBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        unifiedRoleBtns.forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        const targetRole = e.target.dataset.target;
+        document.getElementById('login-role').value = targetRole;
+        
+        if (targetRole === 'client') {
+          regLink.style.display = 'inline';
+          regLink.onclick = (ev) => { ev.preventDefault(); navigate('client-register'); };
+        } else if (targetRole === 'counselor') {
+          regLink.style.display = 'inline';
+          regLink.onclick = (ev) => { ev.preventDefault(); navigate('register-counselor'); };
+        } else if (targetRole === 'admin') {
+          regLink.style.display = 'inline';
+          regLink.onclick = (ev) => { ev.preventDefault(); navigate('admin-register'); };
+        }
+      });
+    });
+  }
 
   const clicks = [
     { id: "profile-edit", fn: () => setProfileEditing(true) },
