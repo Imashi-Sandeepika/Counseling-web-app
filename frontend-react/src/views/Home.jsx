@@ -6,7 +6,6 @@ const Home = () => {
     const { store, navigate, api } = useStore();
     const lang = store.settings.language || 'en';
     const dict = i18n[lang] || i18n.en;
-    const [sessions, setSessions] = useState([]);
     
     // AI Mood Check-in State
     const [checkInText, setCheckInText] = useState('');
@@ -14,16 +13,6 @@ const Home = () => {
     const [checkInResult, setCheckInResult] = useState(null);
     const [sentimentHistory, setSentimentHistory] = useState([]);
     const [historyRange, setHistoryRange] = useState('7');
-
-    useEffect(() => {
-        const loadSessions = async () => {
-            const data = await api(`/api/sessions?email=${store.user.email}`);
-            if (Array.isArray(data)) {
-                setSessions(data.slice(0, 3));
-            }
-        };
-        loadSessions();
-    }, [store.user.email]);
 
     useEffect(() => {
         const loadHistory = async () => {
@@ -122,32 +111,6 @@ const Home = () => {
                 </div>
             </div>
 
-            {sessions.length > 0 && (
-                <div className="grid grid-cols-1" style={{ marginTop: '40px', maxWidth: '900px', margin: '40px auto' }}>
-                    <section className="panel animate-in" style={{ textAlign: 'left' }}>
-                        <h3 style={{ marginBottom: '20px' }}>Recent Sessions</h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                            {sessions.map((s, i) => {
-                                const date = new Date(s.start);
-                                return (
-                                    <div key={i} className="panel-lite" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px' }}>
-                                        <div>
-                                            <div style={{ fontWeight: '600', marginBottom: '5px' }}>{s.category || 'Session'}</div>
-                                            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                                                {s.counselorName && `with ${s.counselorName}`}
-                                                {s.notes && ` - ${s.notes.substring(0, 50)}${s.notes.length > 50 ? '...' : ''}`}
-                                            </div>
-                                        </div>
-                                        <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                                            {date.toLocaleDateString()}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </section>
-                </div>
-            )}
 
             {/* AI Mood & Sentiment Check-in Section */}
             <div className="grid grid-cols-1" style={{ marginTop: '40px', maxWidth: '900px', margin: '40px auto' }}>
