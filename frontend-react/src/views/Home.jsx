@@ -134,9 +134,9 @@ const Home = () => {
                                 minHeight: '120px', 
                                 padding: '15px', 
                                 borderRadius: '12px', 
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                background: 'rgba(0,0,0,0.2)',
-                                color: 'white',
+                                border: '1px solid var(--border, rgba(128,128,128,0.3))',
+                                background: 'var(--bg-input, rgba(128,128,128,0.1))',
+                                color: 'var(--text, inherit)',
                                 fontSize: '1rem',
                                 resize: 'vertical'
                             }}
