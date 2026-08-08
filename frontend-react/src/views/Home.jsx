@@ -62,32 +62,32 @@ const Home = () => {
                 <section className="panel animate-in" style={{ padding: '40px', background: 'var(--surface)', textAlign: 'left' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '20px' }}>
                         <div>
-                            <h2 style={{ fontSize: '1.8rem', marginBottom: '8px' }}>Your Mindfulness Journey</h2>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Consistent practice leads to lasting mental clarity.</p>
+                            <h2 style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{dict.ui.journey_title}</h2>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{dict.ui.journey_desc}</p>
                         </div>
-                        <div className="badge badge-success" style={{ padding: '8px 16px', fontSize: '0.9rem', background: 'rgba(50, 222, 132, 0.1)', color: 'var(--accent)', borderRadius: '50px', fontWeight: '700' }}>3 DAY STREAK 🔥</div>
+                        <div className="badge badge-success" style={{ padding: '8px 16px', fontSize: '0.9rem', background: 'rgba(50, 222, 132, 0.1)', color: 'var(--accent)', borderRadius: '50px', fontWeight: '700' }}>{dict.ui.journey_streak}</div>
                     </div>
 
                     <div className="grid grid-cols-3" style={{ gap: '20px' }}>
                         <div className="panel-lite" style={{ textAlign: 'left', background: 'rgba(255,255,255,0.03)', padding: '20px' }}>
                             <div style={{ fontSize: '1.5rem', marginBottom: '10px' }}>🧘‍♂️</div>
-                            <h4 style={{ marginBottom: '5px', fontSize: '1rem' }}>Step 1: Preparation</h4>
-                            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>Find a quiet space, sit comfortably, and set a simple intention for your session.</p>
+                            <h4 style={{ marginBottom: '5px', fontSize: '1rem' }}>{dict.ui.journey_step1_title}</h4>
+                            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>{dict.ui.journey_step1_desc}</p>
                         </div>
                         <div className="panel-lite" style={{ textAlign: 'left', background: 'rgba(255,255,255,0.03)', padding: '20px' }}>
                             <div style={{ fontSize: '1.5rem', marginBottom: '10px' }}>🌬️</div>
-                            <h4 style={{ marginBottom: '5px', fontSize: '1rem' }}>Step 2: Deep Focus</h4>
-                            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>Engage with the 4‑7‑8 breathing technique to regulate your nervous system.</p>
+                            <h4 style={{ marginBottom: '5px', fontSize: '1rem' }}>{dict.ui.journey_step2_title}</h4>
+                            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>{dict.ui.journey_step2_desc}</p>
                         </div>
                         <div className="panel-lite" style={{ textAlign: 'left', background: 'rgba(255,255,255,0.03)', padding: '20px' }}>
                             <div style={{ fontSize: '1.5rem', marginBottom: '10px' }}>📝</div>
-                            <h4 style={{ marginBottom: '5px', fontSize: '1rem' }}>Step 3: Reflection</h4>
-                            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>Take 2 minutes to acknowledge how you feel after the exercise before returning to your day.</p>
+                            <h4 style={{ marginBottom: '5px', fontSize: '1rem' }}>{dict.ui.journey_step3_title}</h4>
+                            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>{dict.ui.journey_step3_desc}</p>
                         </div>
                     </div>
 
                     <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}>
-                        <button className="btn-formal" onClick={() => navigate('live-session')} style={{ padding: '12px 30px', fontSize: '0.9rem' }}>START TODAY'S PRACTICE</button>
+                        <button className="btn-formal" onClick={() => navigate('live-session')} style={{ padding: '12px 30px', fontSize: '0.9rem' }}>{dict.ui.journey_btn}</button>
                     </div>
                 </section>
             </div>
@@ -117,18 +117,18 @@ const Home = () => {
                 <section className="panel animate-in" style={{ padding: '40px', background: 'var(--surface)', textAlign: 'left', borderTop: '4px solid var(--accent)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
                         <span style={{ fontSize: '2.5rem' }}>🧠</span>
-                        <h2 style={{ fontSize: '1.8rem', margin: 0 }}>Let’s Check Your Mood</h2>
+                        <h2 style={{ fontSize: '1.8rem', margin: 0 }}>{dict.ui.checkin_title}</h2>
                     </div>
                     
                     <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '25px', lineHeight: '1.5' }}>
-                        How are you feeling today? Share what's on your mind. PsyCare will analyze your message and help you understand your current emotional tone.
+                        {dict.ui.checkin_desc}
                     </p>
 
                     <div style={{ marginBottom: '20px' }}>
                         <textarea 
                             value={checkInText}
                             onChange={(e) => setCheckInText(e.target.value)}
-                            placeholder="Tell PsyCare how you're feeling..."
+                            placeholder={dict.ui.checkin_placeholder}
                             style={{ 
                                 width: '100%', 
                                 minHeight: '120px', 
@@ -150,7 +150,7 @@ const Home = () => {
                             disabled={checkInLoading || !checkInText.trim()}
                             style={{ padding: '12px 30px', fontSize: '1rem', opacity: (!checkInText.trim() || checkInLoading) ? 0.5 : 1, cursor: (!checkInText.trim() || checkInLoading) ? 'not-allowed' : 'pointer' }}
                         >
-                            {checkInLoading ? 'Analyzing...' : 'Analyze My Feelings'}
+                            {checkInLoading ? dict.ui.checkin_analyzing : dict.ui.checkin_button}
                         </button>
                     </div>
 
@@ -163,49 +163,49 @@ const Home = () => {
                         }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                                 <h3 style={{ margin: 0, fontSize: '1.4rem', color: checkInResult.label === 'positive' ? '#32de84' : '#ff6384', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                    {checkInResult.label === 'positive' ? '😊 Positive' : '😟 Negative'}
+                                    {checkInResult.label === 'positive' ? `😊 ${dict.ui.checkin_positive}` : `😟 ${dict.ui.checkin_negative}`}
                                 </h3>
                                 {checkInResult.score !== undefined && checkInResult.score !== 0 && (
                                     <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.05)', padding: '5px 12px', borderRadius: '20px', fontWeight: '500' }}>
-                                        Confidence: {Math.round(Math.abs(checkInResult.score) * 100)}%
+                                        {dict.ui.checkin_confidence}: {Math.round(Math.abs(checkInResult.score) * 100)}%
                                     </span>
                                 )}
                             </div>
                             <p style={{ fontSize: '1.05rem', lineHeight: '1.6', margin: 0 }}>
                                 {checkInResult.label === 'positive' 
-                                    ? "✨ It's great to see a positive feeling in your check-in. Keep taking care of yourself and continue with the things that help you feel good." 
-                                    : "🌿 It sounds like you're going through a difficult moment. Take a little time for yourself, and remember that you don't have to handle everything alone."}
+                                    ? dict.ui.checkin_positive_msg
+                                    : dict.ui.checkin_negative_msg}
                             </p>
                         </div>
                     )}
 
                     {checkInResult?.error && (
                         <div className="panel-lite animate-in" style={{ background: 'rgba(255,0,0,0.1)', padding: '20px', marginBottom: '30px', borderLeft: '4px solid #ff4444' }}>
-                            We couldn't analyze your check-in right now. Please try again in a moment.
+                            {dict.ui.checkin_error}
                         </div>
                     )}
 
                     {sentimentHistory.length > 0 && (
                         <div style={{ marginTop: '40px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-                                <h3 style={{ margin: 0, fontSize: '1.4rem' }}>📈 My Sentiment History</h3>
+                                <h3 style={{ margin: 0, fontSize: '1.4rem' }}>{dict.ui.history_title}</h3>
                                 <div style={{ display: 'flex', gap: '10px' }}>
                                     <button 
                                         onClick={() => setHistoryRange('7')}
                                         style={{ background: historyRange === '7' ? 'var(--accent)' : 'rgba(255,255,255,0.1)', border: 'none', color: historyRange === '7' ? '#000' : 'white', padding: '6px 16px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: historyRange === '7' ? '600' : 'normal', transition: 'all 0.2s' }}
-                                    >Last 7 Days</button>
+                                    >{dict.ui.history_7_days}</button>
                                     <button 
                                         onClick={() => setHistoryRange('30')}
                                         style={{ background: historyRange === '30' ? 'var(--accent)' : 'rgba(255,255,255,0.1)', border: 'none', color: historyRange === '30' ? '#000' : 'white', padding: '6px 16px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: historyRange === '30' ? '600' : 'normal', transition: 'all 0.2s' }}
-                                    >Last 30 Days</button>
+                                    >{dict.ui.history_30_days}</button>
                                 </div>
                             </div>
                             
                             <div className="panel-lite" style={{ padding: '30px 20px', background: 'rgba(255,255,255,0.02)', position: 'relative' }}>
                                 <div style={{ height: '160px', position: 'relative', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', paddingBottom: '30px' }}>
                                     <div style={{ position: 'absolute', left: 0, top: 0, bottom: '30px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', color: 'var(--text-muted)', fontSize: '0.85rem', padding: '10px 0' }}>
-                                        <span style={{ color: '#32de84', fontWeight: '500' }}>Positive</span>
-                                        <span style={{ color: '#ff6384', fontWeight: '500' }}>Negative</span>
+                                        <span style={{ color: '#32de84', fontWeight: '500' }}>{dict.ui.checkin_positive}</span>
+                                        <span style={{ color: '#ff6384', fontWeight: '500' }}>{dict.ui.checkin_negative}</span>
                                     </div>
                                     
                                     <div style={{ position: 'absolute', left: '70px', right: 0, top: '20px', height: '1px', background: 'rgba(255,255,255,0.08)' }}></div>
@@ -247,13 +247,13 @@ const Home = () => {
 
                     {sentimentHistory.length > 0 && (
                         <div style={{ marginTop: '30px' }}>
-                            <h4 style={{ fontSize: '1.2rem', marginBottom: '15px' }}>Recent Check-ins</h4>
+                            <h4 style={{ fontSize: '1.2rem', marginBottom: '15px' }}>{dict.ui.recent_checkins}</h4>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                 {sentimentHistory.slice(0, 3).map((item, idx) => (
                                     <div key={idx} className="panel-lite" style={{ padding: '15px 20px', borderLeft: `4px solid ${item.sentiment === 'positive' ? '#32de84' : '#ff6384'}`, background: 'rgba(255,255,255,0.01)' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                                             <span style={{ fontWeight: '600', color: item.sentiment === 'positive' ? '#32de84' : '#ff6384' }}>
-                                                {item.sentiment === 'positive' ? '😊 Positive' : '😟 Negative'}
+                                                {item.sentiment === 'positive' ? `😊 ${dict.ui.checkin_positive}` : `😟 ${dict.ui.checkin_negative}`}
                                             </span>
                                             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                                                 {new Date(item.ts).toLocaleDateString()}
@@ -269,10 +269,10 @@ const Home = () => {
                     )}
 
                     <div style={{ marginTop: '40px', padding: '30px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', textAlign: 'center' }}>
-                        <h3 style={{ margin: '0 0 10px 0', fontSize: '1.3rem' }}>💬 Need someone to talk to?</h3>
-                        <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.95rem' }}>Our professional counselors are here to listen and help you navigate your feelings.</p>
+                        <h3 style={{ margin: '0 0 10px 0', fontSize: '1.3rem' }}>{dict.ui.talk_to_counselor_h3}</h3>
+                        <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.95rem' }}>{dict.ui.talk_to_counselor_p}</p>
                         <button className="btn-formal" onClick={() => navigate('counselors')} style={{ padding: '10px 25px', fontSize: '0.95rem' }}>
-                            Talk to a Counselor
+                            {dict.ui.talk_to_counselor_btn}
                         </button>
                     </div>
                 </section>
