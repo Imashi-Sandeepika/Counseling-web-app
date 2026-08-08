@@ -117,7 +117,7 @@ const Home = () => {
                 <section className="panel animate-in" style={{ padding: '40px', background: 'var(--surface)', textAlign: 'left', borderTop: '4px solid var(--accent)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
                         <span style={{ fontSize: '2.5rem' }}>🧠</span>
-                        <h2 style={{ fontSize: '1.8rem', margin: 0 }}>AI Mood & Sentiment Check-in</h2>
+                        <h2 style={{ fontSize: '1.8rem', margin: 0 }}>Let’s Check Your Mood</h2>
                     </div>
                     
                     <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '25px', lineHeight: '1.5' }}>
