@@ -167,6 +167,14 @@ class Feedback(db.Model):
     comment = db.Column(db.Text)
     ts = db.Column(db.DateTime, default=datetime.utcnow)
 
+class SentimentCheckIn(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_email = db.Column(db.String(255), nullable=False)
+    text = db.Column(db.Text, nullable=False)
+    sentiment = db.Column(db.String(16), nullable=False)
+    score = db.Column(db.Float)
+    ts = db.Column(db.DateTime, default=datetime.utcnow)
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
@@ -1075,42 +1083,96 @@ def list_feedback():
 
 @app.route("/api/sentiment", methods=["POST", "GET"])
 def analyze_sentiment():
+    auth = request.headers.get("Authorization") or ""
+    if not auth.lower().startswith("bearer "):
+        return jsonify({"error": "unauthorized"}), 401
+    token = auth.split(" ", 1)[1]
+    t = AuthToken.query.filter_by(token=token).first()
+    if not t or t.expires_at < datetime.utcnow():
+        return jsonify({"error": "unauthorized"}), 401
+    
+    u = User.query.get(t.user_id)
+    if not u:
+        return jsonify({"error": "unauthorized"}), 401
+
     data = request.get_json(silent=True) or {}
     text = (data.get("text") or "").strip()
-    label = "neutral"
+    
+    if not text:
+        return jsonify({"error": "missing_text"}), 400
+
+    label = "positive"
     score = 0.0
-    if text:
-        if 'SENTIMENT_AVAILABLE' in globals() and SENTIMENT_AVAILABLE:
-            try:
-                preprocessed_txt = preprocessing(text)
-                vec = vectorizer(preprocessed_txt)
-                fb_label, fb_score = fallback_prediction(text)
-                if hasattr(vec, "any") and vec.any():
-                    label = get_prediction(vec)
-                    if label == 'positive' and fb_label == 'negative' and fb_score <= -0.30:
-                        label = fb_label
-                    score = fb_score
+
+    if 'SENTIMENT_AVAILABLE' in globals() and SENTIMENT_AVAILABLE:
+        try:
+            preprocessed_txt = preprocessing(text)
+            vec = vectorizer(preprocessed_txt)
+            fb_label, fb_score = fallback_prediction(text)
+            if hasattr(vec, "any") and vec.any():
+                pred = get_prediction(vec)
+                if pred == 'positive' and fb_label == 'negative' and fb_score <= -0.30:
+                    label = "negative"
                 else:
-                    label = fb_label
-                    score = fb_score
-            except Exception:
-                pass
-        else:
-            pos = ["good", "great", "excellent", "helpful", "kind", "supportive", "positive", "improve", "better", "happy", "satisfied"]
-            neg = ["bad", "poor", "terrible", "rude", "unhelpful", "negative", "worse", "sad", "angry", "unsatisfied", "disappointed"]
-            t = text.lower()
-            p = sum(w in t for w in pos)
-            n = sum(w in t for w in neg)
-            if n > p and n > 0:
-                label = "negative"
-                score = -min(1.0, n / max(1, p + n))
-            elif p > n and p > 0:
-                label = "positive"
-                score = min(1.0, p / max(1, p + n))
+                    label = pred
+                score = fb_score
             else:
-                label = "neutral"
-                score = 0.0
+                label = fb_label
+                score = fb_score
+        except Exception:
+            pass
+    else:
+        pos = ["good", "great", "excellent", "helpful", "kind", "supportive", "positive", "improve", "better", "happy", "satisfied"]
+        neg = ["bad", "poor", "terrible", "rude", "unhelpful", "negative", "worse", "sad", "angry", "unsatisfied", "disappointed"]
+        t_text = text.lower()
+        p = sum(w in t_text for w in pos)
+        n = sum(w in t_text for w in neg)
+        if n > p and n > 0:
+            label = "negative"
+            score = -min(1.0, n / max(1, p + n))
+        else:
+            label = "positive"
+            score = min(1.0, p / max(1, p + n))
+
+    if label not in ["positive", "negative"]:
+        label = "positive"
+
+    check_in = SentimentCheckIn(
+        user_email=u.email,
+        text=text,
+        sentiment=label,
+        score=score
+    )
+    db.session.add(check_in)
+    db.session.commit()
+
     return jsonify({"ok": True, "label": label, "score": score})
+
+@app.route("/api/sentiment/history", methods=["GET"])
+def sentiment_history():
+    auth = request.headers.get("Authorization") or ""
+    if not auth.lower().startswith("bearer "):
+        return jsonify({"error": "unauthorized"}), 401
+    token = auth.split(" ", 1)[1]
+    t = AuthToken.query.filter_by(token=token).first()
+    if not t or t.expires_at < datetime.utcnow():
+        return jsonify({"error": "unauthorized"}), 401
+    
+    u = User.query.get(t.user_id)
+    if not u:
+        return jsonify({"error": "unauthorized"}), 401
+
+    limit = request.args.get("limit", default=30, type=int)
+    
+    history = SentimentCheckIn.query.filter_by(user_email=u.email).order_by(SentimentCheckIn.ts.desc()).limit(limit).all()
+    
+    return jsonify([{
+        "id": item.id,
+        "text": item.text,
+        "sentiment": item.sentiment,
+        "score": item.score,
+        "ts": int(item.ts.timestamp() * 1000)
+    } for item in history])
 
 @app.route("/api/auth/register", methods=["POST", "GET"])
 def auth_register():
