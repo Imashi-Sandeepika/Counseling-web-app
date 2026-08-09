@@ -92,6 +92,7 @@ export const StoreProvider = ({ children }) => {
         }
 
         setActiveView(target);
+        window.scrollTo(0, 0);
         // Removed addActivity from here to prevent lag on redirection
     };
 
