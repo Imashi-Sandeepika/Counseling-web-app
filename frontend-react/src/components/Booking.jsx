@@ -93,7 +93,7 @@ const Booking = ({ counselor, onBack }) => {
             email: store.user.email
         });
         if (res && res.ok) {
-            alert(`Booking request confirmed for ${date} at ${formattedTime}!`);
+            alert(`Booking requested for ${date} at ${formattedTime}`);
             navigate('home');
         } else {
             alert(res?.error || "Failed to book appointment.");
