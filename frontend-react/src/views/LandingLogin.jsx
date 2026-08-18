@@ -7,6 +7,7 @@ const LandingLogin = () => {
     const [role, setRole] = useState('client'); // client, counselor, admin
     const [formData, setFormData] = useState({ email: '', password: '', name: '' });
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -98,11 +99,55 @@ const LandingLogin = () => {
                             
                             <div className="input-group">
                                 <label>Password</label>
-                                <input name="password" type="password" value={formData.password} onChange={handleChange} placeholder="Enter your password" required />
+                                <div style={{ position: 'relative', display: 'flex', alignItems: 'center', width: '100%' }}>
+                                    <input 
+                                        name="password" 
+                                        type={showPassword ? "text" : "password"} 
+                                        value={formData.password} 
+                                        onChange={handleChange} 
+                                        placeholder="Enter your password" 
+                                        required 
+                                        style={{ width: '100%', paddingRight: '44px', boxSizing: 'border-box' }} 
+                                    />
+                                    <button 
+                                        type="button" 
+                                        onClick={() => setShowPassword(!showPassword)} 
+                                        title={showPassword ? "Hide password" : "Show password"}
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                        style={{ 
+                                            position: 'absolute', 
+                                            right: '10px', 
+                                            top: '50%',
+                                            transform: 'translateY(-50%)',
+                                            background: 'rgba(255, 255, 255, 0.05)', 
+                                            border: '1px solid rgba(255, 255, 255, 0.1)', 
+                                            borderRadius: '6px',
+                                            cursor: 'pointer', 
+                                            color: '#32de84',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            padding: '5px',
+                                            zIndex: 20
+                                        }}
+                                    >
+                                        {showPassword ? (
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#32de84" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                                            </svg>
+                                        ) : (
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#32de84" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                        )}
+                                    </button>
+                                </div>
                             </div>
                             
                             <div className="form-options" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', fontSize: '0.9rem' }}>
-                                <label className="remember-me" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--muted)' }}>
+                                <label className="remember-me" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted, #8b949e)' }}>
                                     <input type="checkbox" name="remember" /> Remember me
                                 </label>
                                 <button type="button" onClick={() => navigate('forgot-password')} className="forgot-password" style={{ color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer' }}>Forgot Password?</button>
@@ -110,7 +155,7 @@ const LandingLogin = () => {
                             
                             <button type="submit" className="btn-primary" style={{ width: '100%', background: 'var(--accent)', color: '#000', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 700, cursor: 'pointer', transition: 'transform 0.2s' }} disabled={loading}>Login</button>
                             
-                            <div className="divider" style={{ display: 'flex', alignItems: 'center', textAlign: 'center', margin: '24px 0', color: 'var(--muted)' }}>
+                            <div className="divider" style={{ display: 'flex', alignItems: 'center', textAlign: 'center', margin: '24px 0', color: 'var(--text-muted, #8b949e)' }}>
                                 <span style={{ flex: 1, borderBottom: '1px solid var(--border)' }}></span>
                                 <span style={{ padding: '0 10px', fontSize: '0.9rem' }}>OR</span>
                                 <span style={{ flex: 1, borderBottom: '1px solid var(--border)' }}></span>
@@ -126,7 +171,7 @@ const LandingLogin = () => {
                                 Continue with Google
                             </button>
                             
-                            <div className="signup-prompt" style={{ textAlign: 'center', marginTop: '24px', fontSize: '0.9rem', color: 'var(--muted)' }}>
+                            <div className="signup-prompt" style={{ textAlign: 'center', marginTop: '24px', fontSize: '0.9rem', color: 'var(--text-muted, #8b949e)' }}>
                                 Don't have an account? <button type="button" onClick={() => { if(role === 'counselor') navigate('register-counselor'); else setActiveTab('register'); }} style={{ color: 'var(--accent)', background: 'none', border: 'none', fontWeight: 600, cursor: 'pointer' }}>Sign Up</button>
                             </div>
                         </form>
@@ -142,10 +187,54 @@ const LandingLogin = () => {
                             </div>
                             <div className="input-group">
                                 <label>Password</label>
-                                <input name="password" type="password" value={formData.password} onChange={handleChange} placeholder="Enter your password" required />
+                                <div style={{ position: 'relative', display: 'flex', alignItems: 'center', width: '100%' }}>
+                                    <input 
+                                        name="password" 
+                                        type={showPassword ? "text" : "password"} 
+                                        value={formData.password} 
+                                        onChange={handleChange} 
+                                        placeholder="Enter your password" 
+                                        required 
+                                        style={{ width: '100%', paddingRight: '44px', boxSizing: 'border-box' }} 
+                                    />
+                                    <button 
+                                        type="button" 
+                                        onClick={() => setShowPassword(!showPassword)} 
+                                        title={showPassword ? "Hide password" : "Show password"}
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                        style={{ 
+                                            position: 'absolute', 
+                                            right: '10px', 
+                                            top: '50%',
+                                            transform: 'translateY(-50%)',
+                                            background: 'rgba(255, 255, 255, 0.05)', 
+                                            border: '1px solid rgba(255, 255, 255, 0.1)', 
+                                            borderRadius: '6px',
+                                            cursor: 'pointer', 
+                                            color: '#32de84',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            padding: '5px',
+                                            zIndex: 20
+                                        }}
+                                    >
+                                        {showPassword ? (
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#32de84" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                                            </svg>
+                                        ) : (
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#32de84" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                        )}
+                                    </button>
+                                </div>
                             </div>
                             <button type="submit" className="btn-primary" style={{ width: '100%', background: 'var(--accent)', color: '#000', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 700, cursor: 'pointer', marginTop: '10px', transition: 'transform 0.2s' }} disabled={loading}>Create Account</button>
-                            <div className="signup-prompt" style={{ textAlign: 'center', marginTop: '24px', fontSize: '0.9rem', color: 'var(--muted)' }}>
+                            <div className="signup-prompt" style={{ textAlign: 'center', marginTop: '24px', fontSize: '0.9rem', color: 'var(--text-muted, #8b949e)' }}>
                                 Already have an account? <button type="button" onClick={() => setActiveTab('login')} style={{ color: 'var(--accent)', background: 'none', border: 'none', fontWeight: 600, cursor: 'pointer' }}>Sign In</button>
                             </div>
                         </form>

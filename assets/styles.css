@@ -2163,3 +2163,34 @@ html[data-kbd="true"] .kbd-hint {
         margin-bottom: 0;
     }
 }
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+}
+.toggle-password-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  cursor: pointer;
+}
+.toggle-password-btn:hover {
+  color: var(--text);
+  background: transparent;
+}
+.toggle-password-btn svg {
+  width: 20px;
+  height: 20px;
+}
