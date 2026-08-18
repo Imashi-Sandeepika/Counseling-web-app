@@ -602,6 +602,15 @@ def add_appointment():
     if not cid or not date or not time:
         return jsonify({"error": "missing_fields"}), 400
     
+    # Validate date is not in the past
+    try:
+        from datetime import datetime, date as dt_date
+        apt_date = datetime.strptime(date, "%Y-%m-%d").date()
+        if apt_date < dt_date.today():
+            return jsonify({"error": "Cannot book an appointment for a past date"}), 400
+    except Exception:
+        pass
+
     # Get counselor info
     c = Counselor.query.get(cid)
     c_name = c.name if c else "Counselor"

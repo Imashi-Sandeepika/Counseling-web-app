@@ -831,6 +831,18 @@ async function book(e) {
   const time = document.getElementById("appointment-time").value;
   if (!cid || !date || !time) return;
 
+  const todayStr = new Date().toISOString().split('T')[0];
+  if (date < todayStr) {
+    alert("Cannot select a past date. Please select a valid date from today onwards.");
+    return;
+  }
+
+  const selectedDateTime = new Date(`${date}T${time}:00`);
+  if (!isNaN(selectedDateTime.getTime()) && selectedDateTime < new Date()) {
+    alert("Cannot book an appointment for a past date or time. Please select a future time.");
+    return;
+  }
+
   const counselor = store.counselors.find(c => String(c.id) === String(cid));
   const counselorName = counselor ? counselor.name : "Unknown";
 
