@@ -1456,13 +1456,37 @@ function startExam() {
   });
 
   startTime = Date.now();
+  const TOTAL_SECONDS = 20 * 60;
   if (examTimerInterval) clearInterval(examTimerInterval);
   examTimerInterval = setInterval(() => {
-    const s = Math.floor((Date.now() - startTime) / 1000);
-    document.getElementById('exam-timer').textContent = `Time elapsed: ${Math.floor(s / 60)}m ${s % 60}s`;
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const left = Math.max(0, TOTAL_SECONDS - elapsed);
+    const remM = Math.floor(left / 60);
+    const remS = left % 60;
+    const elapM = Math.floor(elapsed / 60);
+    const elapS = elapsed % 60;
+
+    const timerEl = document.getElementById('exam-timer');
+    if (timerEl) {
+      timerEl.innerHTML = `⏱️ Time Left: <strong>${remM}m ${remS.toString().padStart(2, '0')}s</strong>`;
+      if (left <= 60) {
+        timerEl.style.color = 'var(--bad, #ff4d4d)';
+      } else if (left <= 300) {
+        timerEl.style.color = 'var(--warning, #ffcc00)';
+      } else {
+        timerEl.style.color = 'var(--accent, #32de84)';
+      }
+    }
+
+    if (left <= 0) {
+      clearInterval(examTimerInterval);
+      alert("⏱️ Time limit reached (20 minutes). Your assessment is being submitted automatically.");
+      submitExam();
+    }
 
     const answered = document.querySelectorAll('#question-container input:checked').length;
-    document.getElementById('exam-progress').style.width = (answered / mcqs.length * 100) + "%";
+    const progressEl = document.getElementById('exam-progress');
+    if (progressEl) progressEl.style.width = (answered / mcqs.length * 100) + "%";
   }, 1000);
 }
 

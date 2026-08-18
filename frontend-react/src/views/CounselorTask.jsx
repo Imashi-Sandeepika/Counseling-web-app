@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useStore } from '../context/StoreContext';
 
 const MCQS = [
@@ -14,33 +14,49 @@ const MCQS = [
     { q: "Which approach focuses on changing negative thought patterns to improve behavior?", a: ["Psychoanalysis", "Cognitive Behavioral Therapy (CBT)", "Person-Centered Therapy", "Art Therapy"], c: 1 },
 ];
 
+const TOTAL_TIME_SECONDS = 20 * 60; // 20 minutes (1200 seconds)
+
 const CounselorTask = () => {
     const { navigate, setStore } = useStore();
     const [step, setStep] = useState('intro'); // intro, exam, results
     const [answers, setAnswers] = useState({});
-    const [startTime, setStartTime] = useState(0);
-    const [elapsed, setElapsed] = useState(0);
+    const [secondsLeft, setSecondsLeft] = useState(TOTAL_TIME_SECONDS);
     const [score, setScore] = useState(0);
+    const answersRef = useRef({});
+
+    answersRef.current = answers;
 
     useEffect(() => {
         let interval;
         if (step === 'exam') {
-            setStartTime(Date.now());
+            setSecondsLeft(TOTAL_TIME_SECONDS);
             interval = setInterval(() => {
-                setElapsed(Math.floor((Date.now() - startTime) / 1000));
+                setSecondsLeft(prev => {
+                    if (prev <= 1) {
+                        clearInterval(interval);
+                        handleAutoSubmit();
+                        return 0;
+                    }
+                    return prev - 1;
+                });
             }, 1000);
         }
         return () => clearInterval(interval);
-    }, [step, startTime]);
+    }, [step]);
+
+    const handleAutoSubmit = () => {
+        alert("⏱️ Time limit reached (20 minutes). Your assessment is being submitted automatically.");
+        submitExam(answersRef.current);
+    };
 
     const handleOptionSelect = (qIdx, oIdx) => {
         setAnswers(prev => ({ ...prev, [qIdx]: oIdx }));
     };
 
-    const submitExam = () => {
+    const submitExam = (currentAnswers = answers) => {
         let correct = 0;
         MCQS.forEach((m, i) => {
-            if (answers[i] === m.c) correct++;
+            if (currentAnswers[i] === m.c) correct++;
         });
         const perc = Math.round((correct / MCQS.length) * 100);
         setScore(perc);
@@ -50,6 +66,19 @@ const CounselorTask = () => {
         setStep('results');
     };
 
+    const elapsedSeconds = TOTAL_TIME_SECONDS - secondsLeft;
+    const elapsedMinutes = Math.floor(elapsedSeconds / 60);
+    const elapsedRemainderSeconds = elapsedSeconds % 60;
+
+    const remainingMinutes = Math.floor(secondsLeft / 60);
+    const remainingSeconds = secondsLeft % 60;
+
+    const isWarning = secondsLeft <= 300; // <= 5 min
+    const isCritical = secondsLeft <= 60; // <= 1 min
+
+    const answeredCount = Object.keys(answers).length;
+    const progressPercent = Math.round((answeredCount / MCQS.length) * 100);
+
     return (
         <section className="view active">
             <div className="panel">
@@ -58,22 +87,83 @@ const CounselorTask = () => {
                 {step === 'intro' && (
                     <div style={{ textAlign: 'center', padding: '20px' }}>
                         <h2>Official Competency Assessment</h2>
-                        <p>Please complete this official examination to verify your counseling proficiency. You need at least 80% to pass.</p>
-                        <div style={{ marginTop: '30px', padding: '30px', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', border: '1px solid var(--border)' }}>
-                            <div style={{ fontSize: '1.2em', marginBottom: '20px' }}>Assessment Status: <strong style={{ color: 'var(--accent)' }}>PENDING</strong></div>
-                            <button className="btn-formal" style={{ padding: '12px 30px' }} onClick={() => setStep('exam')}>Start Official Exam</button>
+                        <p style={{ maxWidth: '600px', margin: '10px auto', color: 'var(--text-muted)' }}>
+                            Please complete this official examination to verify your counseling proficiency. You must score at least 80% within the 20-minute limit.
+                        </p>
+                        <div style={{ marginTop: '30px', padding: '30px', background: 'rgba(255,255,255,0.03)', borderRadius: '16px', border: '1px solid var(--border)', maxWidth: '550px', margin: '30px auto' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '24px', textAlign: 'center' }}>
+                                <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>⏱️ Time Limit</div>
+                                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--accent)' }}>20 Minutes</div>
+                                </div>
+                                <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>🎯 Passing Score</div>
+                                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--good)' }}>80% (8/10)</div>
+                                </div>
+                            </div>
+                            <button className="btn-formal" style={{ padding: '14px 40px', fontSize: '1rem', width: '100%' }} onClick={() => setStep('exam')}>
+                                Start Official Exam (20 min)
+                            </button>
                         </div>
                     </div>
                 )}
 
                 {step === 'exam' && (
                     <div>
+                        {/* Requirement Notice */}
                         <div style={{ background: 'rgba(50, 222, 132, 0.1)', border: '1px solid var(--accent)', padding: '12px', borderRadius: '10px', marginBottom: '20px', textAlign: 'center', fontSize: '0.95em' }}>
-                            <strong>Passing Requirement:</strong> You must earn at least <strong>80% marks</strong> to pass this examination and proceed with registration.
+                            <strong>Passing Requirement:</strong> You must earn at least <strong>80% marks</strong> within the <strong>20-minute limit</strong> to pass.
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', position: 'sticky', top: '0', background: 'var(--card)', padding: '10px', borderRadius: '8px', zIndex: 10 }}>
-                            <div>Time: {Math.floor(elapsed / 60)}m {elapsed % 60}s</div>
-                            <div>Progress: {Math.round((Object.keys(answers).length / MCQS.length) * 100)}%</div>
+
+                        {/* Enhanced Timer & Progress Header */}
+                        <div style={{
+                            position: 'sticky',
+                            top: '10px',
+                            background: 'rgba(13, 17, 23, 0.95)',
+                            backdropFilter: 'blur(12px)',
+                            border: '1px solid var(--border)',
+                            padding: '14px 18px',
+                            borderRadius: '12px',
+                            marginBottom: '25px',
+                            zIndex: 100,
+                            boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+                                {/* Left Side: Time Limit & Counter */}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+                                    <div style={{
+                                        background: isCritical ? 'rgba(255, 77, 77, 0.15)' : isWarning ? 'rgba(255, 204, 0, 0.15)' : 'rgba(50, 222, 132, 0.15)',
+                                        border: `1px solid ${isCritical ? 'var(--bad, #ff4d4d)' : isWarning ? 'var(--warning, #ffcc00)' : 'var(--accent, #32de84)'}`,
+                                        color: isCritical ? 'var(--bad, #ff4d4d)' : isWarning ? 'var(--warning, #ffcc00)' : 'var(--accent, #32de84)',
+                                        padding: '8px 14px',
+                                        borderRadius: '8px',
+                                        fontWeight: '700',
+                                        fontSize: '1rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '6px'
+                                    }}>
+                                        <span>⏱️</span>
+                                        <span>Time Left: {remainingMinutes}m {String(remainingSeconds).padStart(2, '0')}s</span>
+                                    </div>
+                                </div>
+
+                                {/* Right Side: Progress Counter */}
+                                <div style={{ fontSize: '0.9rem', color: 'var(--text-muted, #8b949e)' }}>
+                                    Progress: <strong style={{ color: 'var(--accent, #32de84)' }}>{answeredCount}</strong> / {MCQS.length} ({progressPercent}%)
+                                </div>
+                            </div>
+
+                            {/* Progress bar */}
+                            <div style={{ width: '100%', height: '5px', background: 'rgba(255,255,255,0.06)', borderRadius: '99px', marginTop: '12px', overflow: 'hidden' }}>
+                                <div style={{
+                                    width: `${progressPercent}%`,
+                                    height: '100%',
+                                    background: 'var(--accent, #32de84)',
+                                    borderRadius: '99px',
+                                    transition: 'width 0.3s ease'
+                                }} />
+                            </div>
                         </div>
 
                         <div id="question-container">
@@ -109,7 +199,7 @@ const CounselorTask = () => {
                         <button
                             className="btn-formal"
                             style={{ width: '100%', marginTop: '20px', padding: '15px' }}
-                            onClick={submitExam}
+                            onClick={() => submitExam()}
                             disabled={Object.keys(answers).length < MCQS.length}
                         >
                             Finalize and Submit Assessment
