@@ -860,7 +860,7 @@ def counselor_auth_login():
     t = CounselorToken(counselor_id=c.id, token=token_str, created_at=datetime.utcnow(), expires_at=datetime.utcnow() + timedelta(days=7))
     db.session.add(t)
     db.session.commit()
-    return jsonify({"ok": True, "token": token_str, "counselor": {"id": c.id, "name": c.name, "email": c.email}})
+    return jsonify({"ok": True, "token": token_str, "counselor": {"id": c.id, "name": c.name, "email": c.email, "profile_image": c.profile_image or ""}})
 
 @app.route("/api/counselor/auth/logout", methods=["POST"])
 def counselor_auth_logout():

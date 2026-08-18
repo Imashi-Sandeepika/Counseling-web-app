@@ -43,7 +43,9 @@ const INITIAL_STORE = {
 export const StoreProvider = ({ children }) => {
     const [store, setStore] = useState(() => {
         const saved = localStorage.getItem("mh_store_react");
-        return saved ? JSON.parse(saved) : INITIAL_STORE;
+        const base = saved ? JSON.parse(saved) : INITIAL_STORE;
+        // Exam/interview flags must never persist — always reset on fresh page load
+        return { ...base, counselorVerified: false, counselorInterviewed: false };
     });
 
     const [activeView, setActiveView] = useState('landing-login');
@@ -110,7 +112,9 @@ export const StoreProvider = ({ children }) => {
             ...prev,
             user: INITIAL_STORE.user,
             counselor: INITIAL_STORE.counselor,
-            admin: INITIAL_STORE.admin
+            admin: INITIAL_STORE.admin,
+            counselorVerified: false,
+            counselorInterviewed: false
         }));
     };
 
