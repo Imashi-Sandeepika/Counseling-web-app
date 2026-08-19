@@ -35,7 +35,7 @@ def ensure_admin():
         db.session.commit()
         print(f"\nSUCCESS! Admin Credentials:")
         print(f"Email:    {email}")
-        print(f"Password: {password}")
+        print("Password: [set securely]")
 
 if __name__ == "__main__":
     ensure_admin()

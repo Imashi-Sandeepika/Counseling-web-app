@@ -34,7 +34,7 @@ def check_create_admin():
             )
             db.session.add(new_admin)
             db.session.commit()
-            print(f"Created default admin:\nEmail: {email}\nPassword: {password}")
+            print(f"Created default admin:\nEmail: {email}\nPassword: [set securely]")
 
 if __name__ == "__main__":
     check_create_admin()
