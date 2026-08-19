@@ -10,9 +10,14 @@ from werkzeug.security import generate_password_hash
 
 def ensure_admin():
     with app.app_context():
-        email = "admin@psycare.com"
-        password = "admin"
-        name = "System Admin"
+        email = os.environ.get("ADMIN_EMAIL", "admin@psycare.com")
+        password = os.environ.get("ADMIN_PASSWORD")
+        name = os.environ.get("ADMIN_NAME", "System Admin")
+        
+        if not password:
+            print("Error: ADMIN_PASSWORD environment variable is not set.")
+            print("Please run this script with it set, e.g., set ADMIN_PASSWORD=secret && python create_admin.py")
+            return
         
         admin = Admin.query.filter_by(email=email).first()
         if admin:

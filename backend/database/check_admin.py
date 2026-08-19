@@ -19,9 +19,13 @@ def check_create_admin():
             print("\nNote: Passwords are hashed and cannot be retrieved directly.")
         else:
             print("No admin found. Creating default admin...")
-            email = "admin@psycare.com"
-            password = "admin"
-            name = "Super Admin"
+            email = os.environ.get("ADMIN_EMAIL", "admin@psycare.com")
+            password = os.environ.get("ADMIN_PASSWORD")
+            name = os.environ.get("ADMIN_NAME", "Super Admin")
+            
+            if not password:
+                print("Error: ADMIN_PASSWORD environment variable is not set. Skipping default admin creation.")
+                return
             
             new_admin = Admin(
                 name=name,
