@@ -15,7 +15,7 @@ def seed_data():
         c_email = 'imashisandeepika2001@gmail.com'
         c_name = 'W.A.M.Waduwaththa'
         c_pwd = 'Imashi@0618'
-        
+           
         # Check if exists
         c = Counselor.query.filter_by(email=c_email).first()
         if not c:
